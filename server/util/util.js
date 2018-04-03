@@ -12,6 +12,12 @@ module.exports = {
     // returns raw text for sql query with flexible matching -- you should pass validated data as the "query" argument
     rawFilterQuery : (query = {}) => {
         let arr = R.keys(query)
-        return arr.reduce((acc, val, index) => acc + `${ index == arr.length-1 && arr.length > 1 ? "AND" : "" } (${val}="${query[val]}" or ${val} LIKE "%${query[val]}%") `, ``)
+        return arr.reduce( (acc, val, index) => 
+            {   return acc + 
+                `${ index == arr.length-1 && arr.length > 1 ? "AND" : "" } 
+                ( ${val}="${query[val]}" or ${val} LIKE "%${query[val]}%" ) ` 
+            },
+            ``
+        )
     }
 }
