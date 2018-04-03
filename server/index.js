@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const PORT = process.env.PORT || 4000
+const knex = require('./db/knex')
 
 
 app.use(bodyParser.json())
