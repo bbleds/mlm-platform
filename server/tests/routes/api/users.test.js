@@ -23,11 +23,21 @@ module.exports = (chai, expect) => {
                     })
                 })
                 // list is returned with filters
-                it('Shound receive filtered data when filters are passed in', done => {
+                it('Should process query params', done => {
                     chai.request('http://localhost:4000')
                     .get('/api/users?first_name=be')
                     .end((err, res) => {
-                        console.log('response---------------',res.body)
+                        expect(res.body.error).to.equal(false)
+                        done()
+                    })
+                })
+                it('Should return single record using seed data', done => {
+                    chai.request('http://localhost:4000')
+                    .get('/api/users?first_name=ben&last_name=bledsoe')
+                    .end((err, res) => {
+                        console.log(res.body)
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(1)
                         done()
                     })
                 })
