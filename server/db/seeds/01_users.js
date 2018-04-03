@@ -5,8 +5,8 @@ exports.seed = (knex, Promise) => {
     .then(() => {
       // Inserts seed entries
       return knex('users').insert([
-        {id: 1, first_name: 'rowValue1', last_name: 'whatever'},
-        {id: 2, first_name: 'rowValue2', last_name: 'something'},
+        {id: 1, first_name: 'ben', last_name: 'bledsoe'},
+        {id: 2, first_name: 'dayrin', last_name: 'bledsoe'},
       ])
     })
 }
