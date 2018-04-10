@@ -5,8 +5,7 @@ module.exports = (app, knex) => {
     // return all users or a filtered list of users
     app.get('/api/users', async (req, res) => {
         let resp = {}
-        let where = {}
-        console.log('this is the query', util.rawFilterQuery(req.query))
+        
         try {
             resp.data = await knex.select().table('users').whereRaw(util.rawFilterQuery(req.query))
         } catch(e){

@@ -13,6 +13,7 @@ module.exports = {
     },
     // returns raw text for sql query with flexible matching. Also escapes input chars
     rawFilterQuery : (query = {}) => {
+        // only allow the keys that are allowed to be accessed on users
         let arr = R.filter(i=> USER_ACCESSIBLE_GET_PARAMS.includes(i) , R.keys(query))
         return arr.reduce( (acc, val, index) => 
             {   
