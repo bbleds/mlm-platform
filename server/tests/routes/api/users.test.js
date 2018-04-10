@@ -51,6 +51,15 @@ module.exports = (chai, expect) => {
                         done()
                     })
                 })
+                it('Should remove unallowed keys', done => {
+                    chai.request('http://localhost:4000')
+                    .get("/api/users?some_fake_key=test&first_name=ben&last_name=bledsoe")
+                    .end((err, res) => {
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(1)
+                        done()
+                    })
+                })
             })
 
             // single user is returned

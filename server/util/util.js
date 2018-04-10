@@ -1,5 +1,6 @@
 const R = require('ramda')
 const SqlString = require('sqlstring')
+const { USER_ACCESSIBLE_GET_PARAMS } = require('../constants')
 
 module.exports = {
     // returns object for standard responses from API
@@ -12,7 +13,7 @@ module.exports = {
     },
     // returns raw text for sql query with flexible matching. Also escapes input chars
     rawFilterQuery : (query = {}) => {
-        let arr = R.keys(query)
+        let arr = R.filter(i=> USER_ACCESSIBLE_GET_PARAMS.includes(i) , R.keys(query))
         return arr.reduce( (acc, val, index) => 
             {   
                 return acc + 
