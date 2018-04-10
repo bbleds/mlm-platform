@@ -28,6 +28,7 @@ module.exports = (chai, expect) => {
                     .get('/api/users?first_name=be')
                     .end((err, res) => {
                         expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(1)
                         done()
                     })
                 })
@@ -38,6 +39,15 @@ module.exports = (chai, expect) => {
                         console.log(res.body)
                         expect(res.body.error).to.equal(false)
                         expect(res.body.data.length).to.equal(1)
+                        done()
+                    })
+                })
+                it('Should escape unallowed characters', done => {
+                    chai.request('http://localhost:4000')
+                    .get("/api/users?first_name='ben'&last_name=;/bledsoe")
+                    .end((err, res) => {
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(0)
                         done()
                     })
                 })
