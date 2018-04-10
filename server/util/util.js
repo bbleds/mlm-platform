@@ -4,7 +4,7 @@ const { USER_ACCESSIBLE_GET_PARAMS } = require('../constants')
 
 module.exports = {
     // returns object for standard responses from API
-    standardRes : (data, msg = 'The operation was successful', error = false) => {
+    standardRes : (data=[], msg = 'The operation was successful', error = false) => {
         return {
             data,
             msg,

@@ -48,7 +48,6 @@ module.exports = (chai, expect) => {
                     .get('/api/users?first_name=ben&last_name=bledsoe')
                     .set('authorization', APP_SECRET_KEY)
                     .end((err, res) => {
-                        console.log(res.body)
                         expect(res.body.error).to.equal(false)
                         expect(res.body.data.length).to.equal(1)
                         done()
@@ -76,6 +75,28 @@ module.exports = (chai, expect) => {
                 })
             })
 
+            describe('GET single user', () => {
+                it('Should return an error when incorrect authenication headers are present', done => {
+                    chai.request('http://localhost:4000')
+                    .get("/api/users/1")
+                    .set('authorization', 'testing')
+                    .end((err, res) => {
+                        expect(res.body.error).to.equal(true)
+                        expect(res.body.data.length).to.equal(0)
+                        done()
+                    })
+                })
+                it('Should retrieve a single user by id', done => {
+                    chai.request('http://localhost:4000')
+                    .get("/api/users/1")
+                    .set('authorization', APP_SECRET_KEY)
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(1)
+                        done()
+                    })
+                })
+            })
             // single user is returned
             // user is created
             // user is deleted

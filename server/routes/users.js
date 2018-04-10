@@ -2,6 +2,7 @@ const R = require('ramda')
 const util = require('../util/util.js')
 const { APP_SECRET_KEY } = require('../../config')
 const { generalRequestAuth } = require('../middlewares/auth')
+const table = 'users'
 
 module.exports = (app, knex) => {
     
@@ -12,7 +13,7 @@ module.exports = (app, knex) => {
         let resp = {}
         
         try {
-            resp.data = await knex.select().table('users').whereRaw(util.rawFilterQuery(req.query))
+            resp.data = await knex.select().table(table).whereRaw(util.rawFilterQuery(req.query))
         } catch(e){
             resp.error = true
             resp.msg = e
@@ -22,5 +23,22 @@ module.exports = (app, knex) => {
     })
 
     // get single user
-    app.get('/api/users/:id', (req, res) => res.send({msg: `this is the id ${req.params.id}`}))
+    app.get('/api/users/:id', 
+    generalRequestAuth,
+    async (req, res) => {
+        let resp = {}
+
+        try {
+            resp.data = await knex.select().table(table).where({id:req.params.id})
+        }catch(e){
+            resp.error = true
+            resp.msg = e
+        }
+        console.log('RESPONSE DATA IS ',resp.data)
+        return res.send(util.standardRes(resp.data, resp.msg, resp.error))
+    })
+
+    // create a user
+    // update a user
+    // delete a user
 }

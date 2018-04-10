@@ -7,7 +7,7 @@ module.exports = {
     // require authorization header on request that matches app secret key
     generalRequestAuth : (req, res, next) => {
         return !req.headers.authorization || req.headers.authorization !== APP_SECRET_KEY ? 
-            res.status(401).send(util.standardRes({}, 'Incorrect authorization key provided. Please try again', true)) :
+            res.status(401).send(util.standardRes([], 'Incorrect authorization key provided. Please try again', true)) :
             next()
     }
 }
