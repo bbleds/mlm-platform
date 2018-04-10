@@ -128,7 +128,15 @@ module.exports = (chai, expect) => {
             
             // user is created
             describe('create new user', () => {
-                
+                it('Should return an error when incorrect authenication headers are present', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', 'testing')
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
             })
             // user is updated
             // user is deleted

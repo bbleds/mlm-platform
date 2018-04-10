@@ -42,7 +42,11 @@ module.exports = (app, knex) => {
     })
 
     // create a user
-    // app.post(`${API_BASE_ENDPOINT}/users/:id`)
+    app.post(`${API_BASE_ENDPOINT}/users`,
+    generalRequestAuth,
+    async (req, res) => {
+        res.send(util.standardRes())
+    })
 
     // update a user
     // delete a user
