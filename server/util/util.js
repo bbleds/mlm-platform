@@ -13,13 +13,17 @@ module.exports = {
     },
     // returns raw text for sql query with flexible matching. Also escapes input chars
     rawFilterQuery : (query = {}) => {
+
         // only allow the keys that are allowed to be accessed on users
         let arr = R.filter(i=> USER_ACCESSIBLE_GET_PARAMS.includes(i) , R.keys(query))
+
+        
         return arr.reduce( (acc, val, index) => 
             {   
                 return acc + 
                 `${ index == arr.length-1 && arr.length > 1 ? "AND" : "" } 
-                ( ${val}=${SqlString.escape(query[val].toLowerCase())} or ${val} LIKE ${SqlString.escape('%'+query[val].toLowerCase()+'%')} ) ` 
+                ( ${ val }=${ SqlString.escape(query[val].toLowerCase()) } or ${ val } LIKE ${ SqlString.escape('%'+query[val].toLowerCase()+'%') } )
+                ` 
             },
             ``
         )

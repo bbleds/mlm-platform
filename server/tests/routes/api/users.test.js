@@ -77,7 +77,28 @@ module.exports = (chai, expect) => {
             })
             // SORTING
             it('Should allow sorting on accessible keys', done => {
-                expect(1).to.equal(0)
+                // sort based on seed data
+                chai.request('http://localhost:4000')
+                .get(`${API_BASE_ENDPOINT}/users?order_by=first_name&dir=desc`)
+                .set('authorization', APP_SECRET_KEY)
+                .end((err, res) => {
+                    expect(res.body.error).to.equal(false)
+                    expect(res.body.data.length).to.not.equal(1)
+                    expect(res.body.data[0].first_name).to.equal('dayrin')
+                    done()
+                })
+            })
+            it('Should handle sorting direction', done => {
+                // sort based on seed data
+                chai.request('http://localhost:4000')
+                .get(`${API_BASE_ENDPOINT}/users?order_by=first_name&dir=asc`)
+                .set('authorization', APP_SECRET_KEY)
+                .end((err, res) => {
+                    expect(res.body.error).to.equal(false)
+                    expect(res.body.data.length).to.not.equal(1)
+                    expect(res.body.data[0].first_name).to.equal('ben')
+                    done()
+                })
             })
         })
 
