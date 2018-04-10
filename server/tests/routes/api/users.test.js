@@ -3,9 +3,8 @@ const { API_BASE_ENDPOINT }  = require('../../../constants')
 
 module.exports = (chai, expect) => {
     describe('/users endpoints', () => {
-        console.log('ENDPOINT IS', `${API_BASE_ENDPOINT}/users`)
         // users list
-        describe('GET basic users list - /api/users', () => {
+        describe(`GET basic users list - ${API_BASE_ENDPOINT}/users`, () => {
             it('Should return an error when incorrect authentication headers are present', done => {
                 chai.request('http://localhost:4000')
                 .get(`${API_BASE_ENDPOINT}/users`)
@@ -75,6 +74,10 @@ module.exports = (chai, expect) => {
                     expect(res.body.data.length).to.equal(1)
                     done()
                 })
+            })
+            // SORTING
+            it('Should allow sorting on accessible keys', done => {
+                expect(1).to.equal(0)
             })
         })
 

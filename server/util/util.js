@@ -19,7 +19,7 @@ module.exports = {
             {   
                 return acc + 
                 `${ index == arr.length-1 && arr.length > 1 ? "AND" : "" } 
-                ( ${val}=${SqlString.escape(query[val])} or ${val} LIKE ${SqlString.escape('%'+query[val]+'%')} ) ` 
+                ( ${val}=${SqlString.escape(query[val].toLowerCase())} or ${val} LIKE ${SqlString.escape('%'+query[val].toLowerCase()+'%')} ) ` 
             },
             ``
         )
