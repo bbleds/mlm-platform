@@ -2,12 +2,13 @@ const R = require('ramda')
 const util = require('../util/util.js')
 const { APP_SECRET_KEY } = require('../../config')
 const { generalRequestAuth } = require('../middlewares/auth')
+const { API_BASE_ENDPOINT }  = require('../constants')
 const table = 'users'
 
 module.exports = (app, knex) => {
     
     // return all users or a filtered list of users
-    app.get('/api/users',
+    app.get(`${API_BASE_ENDPOINT}/users`,
     generalRequestAuth,
     async (req, res) => {
         let resp = {}
@@ -23,7 +24,7 @@ module.exports = (app, knex) => {
     })
 
     // get single user
-    app.get('/api/users/:id', 
+    app.get(`${API_BASE_ENDPOINT}/users/:id`, 
     generalRequestAuth,
     async (req, res) => {
         let resp = {}
@@ -34,11 +35,13 @@ module.exports = (app, knex) => {
             resp.error = true
             resp.msg = e
         }
-        console.log('RESPONSE DATA IS ',resp.data)
+        
         return res.send(util.standardRes(resp.data, resp.msg, resp.error))
     })
 
     // create a user
+    // app.post(`${API_BASE_ENDPOINT}/users/:id`)
+
     // update a user
     // delete a user
 }
