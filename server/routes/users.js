@@ -14,8 +14,6 @@ module.exports = (app, knex) => {
         let resp = {}
         
         try {
-            let orderByStr = util.generateOrderByStr(req.query, USER_ACCESSIBLE_GET_PARAMS)
-
             resp.data = await knex.select().table(table)
                 .whereRaw(util.generateRawWhereQuery(req.query, USER_ACCESSIBLE_GET_PARAMS))
                 .orderByRaw(util.generateOrderByStr(req.query, USER_ACCESSIBLE_GET_PARAMS))
