@@ -14,18 +14,11 @@ module.exports = (app, knex) => {
         let resp = {}
         
         try {
-            // generate order by string
-            let orderByStr = R.keys(req.query).includes('order_by') && USER_ACCESSIBLE_GET_PARAMS.includes(req.query.order_by) ? 
-                `${req.query.order_by} 
-                    ${
-                        req.query.dir && (req.query.dir.toUpperCase() == 'ASC' || req.query.dir.toUpperCase() == 'DESC') ? 
-                        req.query.dir.toUpperCase() : 
-                        'DESC'
-                    }
-                ` : 
-                'created_on DESC'
+            let orderByStr = util.generateOrderByStr(req.query, USER_ACCESSIBLE_GET_PARAMS)
 
-            resp.data = await knex.select().table(table).whereRaw(util.rawFilterQuery(req.query)).orderByRaw(orderByStr)
+            resp.data = await knex.select().table(table)
+                .whereRaw(util.generateRawWhereQuery(req.query, USER_ACCESSIBLE_GET_PARAMS))
+                .orderByRaw(util.generateOrderByStr(req.query, USER_ACCESSIBLE_GET_PARAMS))
         } catch(e){
             resp.error = true
             resp.msg = e

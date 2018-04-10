@@ -12,12 +12,11 @@ module.exports = {
         }
     },
     // returns raw text for sql query with flexible matching. Also escapes input chars
-    rawFilterQuery : (query = {}) => {
+    generateRawWhereQuery : (query = {}, allowedKeys = []) => {
 
-        // only allow the keys that are allowed to be accessed on users
-        let arr = R.filter(i=> USER_ACCESSIBLE_GET_PARAMS.includes(i) , R.keys(query))
+        // filter out unallowed keys
+        let arr = R.filter(i => allowedKeys.includes(i) , R.keys(query))
 
-        
         return arr.reduce( (acc, val, index) => 
             {   
                 return acc + 
@@ -27,5 +26,18 @@ module.exports = {
             },
             ``
         )
+    },
+    // returns a string to be used in knex "order by" clause
+    generateOrderByStr : (query = {}, allowedKeys = []) => {
+        
+        return R.keys(query).includes('order_by') && allowedKeys.includes(query.order_by) ? 
+                `${query.order_by} 
+                    ${
+                        query.dir && (query.dir.toUpperCase() == 'ASC' || query.dir.toUpperCase() == 'DESC') ? 
+                        query.dir.toUpperCase() : 
+                        'DESC'
+                    }
+                ` : 
+                'created_on DESC'
     }
 }
