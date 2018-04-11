@@ -3,7 +3,69 @@ const { API_BASE_ENDPOINT }  = require('../../../constants')
 
 module.exports = (chai, expect) => {
     describe('/users endpoints', () => {
-        // users list
+
+        const userCreation = new Promise((resolve, reject) => {
+            // user is created
+            describe('create new user', () => {
+                it('Should return an error when incorrect authenication headers are present', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', 'testing')
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('Should return an error when post body does not contain all required keys', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({last_name:'testing', email: 'valid@email.com', bio: 'testing'})
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('Should return an error when post body does contains invalid value for a required key', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({first_name:'testing', last_name:'', email: 'valid@email.com', bio: 'testing'})
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('Should return an error when post body contains an invalid email', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({first_name:'testing', last_name:'testing', email: 'invalidemail.com', bio: 'testing'})
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('Should allow creation of a user with allowed properties, strip out unallowed properties, and return the new user id', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({first_name:'testing_new_user', last_name:'testing', email: 'valid@email.com', bio: 'testing', some_unallowed_key:'testing'})
+                    .end((err, res) => {  
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(1)
+                        !res.body.error && res.body.data[0].user_id ? 
+                            resolve(res.body.data[0].user_id) :
+                            reject('Could not create user')
+                        done()
+                    })
+                })
+            })
+        })
+
+        userCreation
+        .then((newUserId) => {
+                  // users list
         describe(`GET basic users list - ${API_BASE_ENDPOINT}/users`, () => {
             it('Should return an error when incorrect authentication headers are present', done => {
                 chai.request('http://localhost:4000')
@@ -84,7 +146,7 @@ module.exports = (chai, expect) => {
                 .end((err, res) => {
                     expect(res.body.error).to.equal(false)
                     expect(res.body.data.length).to.not.equal(1)
-                    expect(res.body.data[0].first_name).to.equal('dayrin')
+                    expect(res.body.data[0].first_name).to.equal('testing_new_user')
                     done()
                 })
             })
@@ -126,30 +188,8 @@ module.exports = (chai, expect) => {
                 })
             })
             
-            // user is created
-            describe('create new user', () => {
-                it('Should return an error when incorrect authenication headers are present', done => {
-                    chai.request('http://localhost:4000')
-                    .post(`${API_BASE_ENDPOINT}/users`)
-                    .set('authorization', 'testing')
-                    .end((err, res) => {                        
-                        expect(res.body.error).to.equal(true)
-                        done()
-                    })
-                })
-                it('Should allow creation of a user with allowed properties', done => {
-                    chai.request('http://localhost:4000')
-                    .post(`${API_BASE_ENDPOINT}/users`)
-                    .set('authorization', APP_SECRET_KEY)
-                    .send({first_name:'testing', last_name:'testing', email: 'valid@email.com', bio: 'testing', some_unallowed_key:'testing'})
-                    .end((err, res) => {  
-                        console.log('RES BODY', res.body)
-                        expect(1).to.equal(0)
-                        done()
-                    })
-                })
-            })
             // user is updated
-            // user is deleted
+            // user is deleted  
+        })
     })
 }
