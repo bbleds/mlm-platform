@@ -14,6 +14,7 @@ const {
 }  = require('../constants')
 
 const table = 'users'
+const requiredKeys = R.keys(R.filter(i => i.required, ACCESSIBLE_USER_PROPERTIES))
 
 module.exports = (app, knex) => {
     
@@ -57,19 +58,13 @@ module.exports = (app, knex) => {
     validateRequestBody,
     async (req, res) => {
         const { body } = req
-        const requiredKeys = R.keys(R.filter(i => i.required, ACCESSIBLE_USER_PROPERTIES))
         const emptyRequiredVals = R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), body)).length
         const hasRequiredKeys = R.difference(requiredKeys, R.keys(body)).length === 0
-
-        // return !emptyRequiredVals && hasRequiredKeys && emailValidator.validate(body.email.trim()) ? 
-        //     // trim values and send back the cleaned data
-        //     res.send(util.standardRes(R.map( i =>  i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body)))) : 
-        //     res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys and a valid email address', true))
 
         if (emptyRequiredVals || !hasRequiredKeys || !emailValidator.validate(body.email.trim())) return res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys and a valid email address', true))
 
         try{
-            const resp = await knex(table).insert(R.map( i =>  i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body)))
+            const resp = await knex(table).insert(R.assoc('permissions', 'general', R.map( i => i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body))))
             res.send(util.standardRes([{user_id:resp[0]}]))
         } catch(e){
             res.send(util.standardRes([], `The following error occurred when creating this user: ${e}`, true))
@@ -77,5 +72,25 @@ module.exports = (app, knex) => {
     })
 
     // update a user
+    app.post(`${API_BASE_ENDPOINT}/users/:id`,
+    generalRequestAuth,
+    validateRequestBody,
+    async (req, res) => {
+        const { body } = req
+        // filter out unallowed keys
+        const filteredData = R.pickBy((val, key) => R.keys(ACCESSIBLE_USER_PROPERTIES).includes(key), body)
+        // check if we have any values that are invalid for required keys
+        const emptyRequiredVals = R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), filteredData)).length
+
+        if (emptyRequiredVals || !R.keys(filteredData).length || (body.email && !emailValidator.validate(body.email.trim())) ) res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key and a valid email address if you wish to update the email property', true))
+        
+        // update user
+        try{
+            const resp = await knex(table).where({id : req.params.id}).update(R.map(i => i.trim(), filteredData))
+            res.send(util.standardRes())
+        } catch(e){
+            res.send(util.standardRes([], `The following error occurred when updating this user: ${e}`, true))
+        }
+    })
     // delete a user
 }
