@@ -1,4 +1,5 @@
 const R = require('ramda')
+const emailValidator = require('email-validator')
 const util = require('../util/util.js')
 const { APP_SECRET_KEY } = require('../../config')
 
@@ -60,10 +61,10 @@ module.exports = (app, knex) => {
         const emptyRequiredVals = R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), body)).length
         const hasRequiredKeys = R.difference(requiredKeys, R.keys(body)).length === 0
 
-        return !emptyRequiredVals && hasRequiredKeys ? 
+        return !emptyRequiredVals && hasRequiredKeys && emailValidator.validate(body.email.trim()) ? 
             // trim values and send back the cleaned data
             res.send(util.standardRes(R.map( i =>  i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body)))) : 
-            res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys', true))
+            res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys and a valid email address', true))
     })
 
     // update a user
