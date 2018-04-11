@@ -56,11 +56,14 @@ module.exports = (app, knex) => {
     validateRequestBody,
     async (req, res) => {
         const { body } = req
-        //  check that the body contains all required keys
-        return !R.contains(R.keys(body), R.keys(R.filter(i => i.required, ACCESSIBLE_USER_PROPERTIES))) ?
+        const requiredKeys = R.keys(R.filter(i => i.required, ACCESSIBLE_USER_PROPERTIES))
+        const emptyRequiredVals = R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), body)).length
+        const hasRequiredKeys = R.difference(requiredKeys, R.keys(body)).length === 0
+
+        return !emptyRequiredVals && hasRequiredKeys ? 
             // trim values and send back the cleaned data
             res.send(util.standardRes(R.map( i =>  i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body)))) : 
-            res.send(util.standardRes([], 'Please be sure to provide values for all required keys', true))
+            res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys', true))
     })
 
     // update a user
