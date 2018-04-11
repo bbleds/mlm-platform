@@ -137,6 +137,17 @@ module.exports = (chai, expect) => {
                         done()
                     })
                 })
+                it('Should allow creation of a user with allowed properties', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({first_name:'testing', last_name:'testing', email: 'valid@email.com', bio: 'testing', some_unallowed_key:'testing'})
+                    .end((err, res) => {  
+                        console.log('RES BODY', res.body)
+                        expect(1).to.equal(0)
+                        done()
+                    })
+                })
             })
             // user is updated
             // user is deleted

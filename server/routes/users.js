@@ -1,8 +1,17 @@
 const R = require('ramda')
 const util = require('../util/util.js')
 const { APP_SECRET_KEY } = require('../../config')
-const { generalRequestAuth } = require('../middlewares/auth')
-const { API_BASE_ENDPOINT, USER_ACCESSIBLE_GET_PARAMS }  = require('../constants')
+
+const { 
+    generalRequestAuth, 
+    validateRequestBody 
+} = require('../middlewares/auth')
+
+const { 
+    API_BASE_ENDPOINT, 
+    ACCESSIBLE_USER_PROPERTIES 
+}  = require('../constants')
+
 const table = 'users'
 
 module.exports = (app, knex) => {
@@ -15,8 +24,8 @@ module.exports = (app, knex) => {
         
         try {
             resp.data = await knex.select().table(table)
-                .whereRaw(util.generateRawWhereQuery(req.query, USER_ACCESSIBLE_GET_PARAMS))
-                .orderByRaw(util.generateOrderByStr(req.query, USER_ACCESSIBLE_GET_PARAMS))
+                .whereRaw(util.generateRawWhereQuery(req.query, R.keys(ACCESSIBLE_USER_PROPERTIES)))
+                .orderByRaw(util.generateOrderByStr(req.query, R.keys(ACCESSIBLE_USER_PROPERTIES)))
         } catch(e){
             resp.error = true
             resp.msg = e
@@ -44,8 +53,14 @@ module.exports = (app, knex) => {
     // create a user
     app.post(`${API_BASE_ENDPOINT}/users`,
     generalRequestAuth,
+    validateRequestBody,
     async (req, res) => {
-        res.send(util.standardRes())
+        const { body } = req
+        //  check that the body contains all required keys
+        return !R.contains(R.keys(body), R.keys(R.filter(i => i.required, ACCESSIBLE_USER_PROPERTIES))) ?
+            // trim values and send back the cleaned data
+            res.send(util.standardRes(R.map( i =>  i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body)))) : 
+            res.send(util.standardRes([], 'Please be sure to provide values for all required keys', true))
     })
 
     // update a user
