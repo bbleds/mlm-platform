@@ -41,5 +41,7 @@ module.exports = {
                 'created_on DESC'
     },
     // returns an array of key names of any key value pairs that are required but contain empty values.
-    hasEmptyRequiredVals : (requiredKeys, data) => R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), data))
+    hasEmptyRequiredVals : (requiredKeys, data) => R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), data)),
+    // filter out all unallowed keys in an object and trim each value
+    filterAndTrimData : (allowedDataObj, data) => R.map( i => i.trim(), R.pickBy((val, key) => allowedDataObj[key] , data))
 }

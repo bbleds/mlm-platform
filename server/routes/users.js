@@ -59,12 +59,17 @@ module.exports = (app, knex) => {
     async (req, res) => {
         const resp = {}
         const { body } = req
+        const filteredData = util.filterAndTrimData(ACCESSIBLE_USER_PROPERTIES, body)
         const hasRequiredKeys = R.difference(requiredKeys, R.keys(body)).length === 0
 
-        if (util.hasEmptyRequiredVals(requiredKeys, body).length || !hasRequiredKeys || !emailValidator.validate(body.email.trim())) return res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys and a valid email address', true))
+        if (!R.keys(filteredData).length ||
+            util.hasEmptyRequiredVals(requiredKeys, filteredData).length || 
+            !hasRequiredKeys ||
+            !emailValidator.validate(filteredData.email) 
+        ) return res.send(util.standardRes([], 'Please be sure to provide accepted values for all required keys and a valid email address', true))
 
         try{
-            const insertResp = await knex(table).insert(R.assoc('permissions', 'general', R.map( i => i.trim(), R.pickBy((val, key) => ACCESSIBLE_USER_PROPERTIES[key] , body))))
+            const insertResp = await knex(table).insert(R.assoc('permissions', 'general', filteredData))
             resp.data = [{user_id : insertResp[0]}]
         } catch(e){
             resp.error = true
@@ -81,14 +86,16 @@ module.exports = (app, knex) => {
     async (req, res) => {
         const resp = {}
         const { body } = req
-        // filter out unallowed keys
-        const filteredData = R.pickBy((val, key) => R.keys(ACCESSIBLE_USER_PROPERTIES).includes(key), body)
+        const filteredData = util.filterAndTrimData(ACCESSIBLE_USER_PROPERTIES, body)
 
-        if (util.hasEmptyRequiredVals(requiredKeys, filteredData).length || !R.keys(filteredData).length || (body.email && !emailValidator.validate(body.email.trim())) ) res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key and a valid email address if you wish to update the email property', true))
+        if (!R.keys(filteredData).length ||
+            util.hasEmptyRequiredVals(requiredKeys, filteredData).length ||
+            (filteredData.email && !emailValidator.validate(filteredData.email)) 
+        ) return res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key and a valid email address if you wish to update the email property', true))
         
         // update user
         try{
-            resp.data = await knex(table).where({id : req.params.id}).update(R.map(i => i.trim(), filteredData))
+            resp.data = await knex(table).where({id : req.params.id}).update(filteredData)
         } catch(e){
             resp.error = true
             resp.msg = e
@@ -96,6 +103,6 @@ module.exports = (app, knex) => {
 
         res.send(util.standardRes(resp.data, resp.msg, resp.error))
     })
-    
+
     // delete a user
 }
