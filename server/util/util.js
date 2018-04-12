@@ -39,5 +39,7 @@ module.exports = {
                     }
                 ` : 
                 'created_on DESC'
-    }
+    },
+    // returns an array of key names of any key value pairs that are required but contain empty values.
+    hasEmptyRequiredVals : (requiredKeys, data) => R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), data))
 }
