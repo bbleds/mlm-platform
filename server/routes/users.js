@@ -23,11 +23,12 @@ module.exports = (app, knex) => {
     generalRequestAuth,
     async (req, res) => {
         let resp = {}
-        
         try {
             resp.data = await knex(table).select()
                 .whereRaw(util.generateRawWhereQuery(ACCESSIBLE_USER_PROPERTIES, req.query))
                 .orderByRaw(util.generateOrderByStr(ACCESSIBLE_USER_PROPERTIES, req.query))
+                .limit(util.generateLimit(req.query))
+                .offset(util.generateOffset(req.query))
         } catch(e){
             resp.error = true
             resp.msg = e

@@ -44,6 +44,12 @@ module.exports = {
                 'created_on DESC'
     },
 
+    // generate a limit for use in a query
+    generateLimit : query => query.limit ? parseInt(query.limit) : 25,
+
+    // generate an offset for use in a query
+    generateOffset : query => query.page && parseInt(query.page)-1 >= 0  ? module.exports.generateLimit(query) * (parseInt(query.page)-1) : 0,
+
     // returns an array of key names of any key value pairs that are required but contain empty values.
     hasEmptyRequiredVals : (requiredKeys, data) => R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), data)),
     
