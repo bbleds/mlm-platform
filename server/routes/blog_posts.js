@@ -26,6 +26,8 @@ module.exports = (app, knex) => {
             resp.data = await knex(table).select()
                 .whereRaw(util.generateRawWhereQuery(ACCESSIBLE_BLOG_POST_PROPERTIES, req.query))
                 .orderByRaw(util.generateOrderByStr(ACCESSIBLE_BLOG_POST_PROPERTIES, req.query))
+                .limit(util.generateLimit(req.query))
+                .offset(util.generateOffset(req.query))
         } catch(e) {
             resp.error = true
             resp.msg = e

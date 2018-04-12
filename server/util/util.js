@@ -1,6 +1,6 @@
 const R = require('ramda')
 const SqlString = require('sqlstring')
-const { USER_ACCESSIBLE_GET_PARAMS } = require('../constants')
+const { API_LIST_DEFAULT_LENGTH } = require('../constants')
 
 module.exports = {
 
@@ -45,7 +45,7 @@ module.exports = {
     },
 
     // generate a limit for use in a query
-    generateLimit : query => query.limit ? parseInt(query.limit) : 25,
+    generateLimit : query => query.limit ? parseInt(query.limit) : API_LIST_DEFAULT_LENGTH,
 
     // generate an offset for use in a query
     generateOffset : query => query.page && parseInt(query.page)-1 >= 0  ? module.exports.generateLimit(query) * (parseInt(query.page)-1) : 0,

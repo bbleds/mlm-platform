@@ -1,6 +1,7 @@
 // list of constants that are used throughout the application
 module.exports = {
     API_BASE_ENDPOINT : '/api/v1',
+    API_LIST_DEFAULT_LENGTH : 25,
     // accessible user properties with property details - readable and writable properties define what you can access in post data or get params
     ACCESSIBLE_USER_PROPERTIES: {
         'first_name': {
