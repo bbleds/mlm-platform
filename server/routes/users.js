@@ -26,8 +26,8 @@ module.exports = (app, knex) => {
         
         try {
             resp.data = await knex(table).select()
-                .whereRaw(util.generateRawWhereQuery(req.query, R.keys(ACCESSIBLE_USER_PROPERTIES)))
-                .orderByRaw(util.generateOrderByStr(req.query, R.keys(ACCESSIBLE_USER_PROPERTIES)))
+                .whereRaw(util.generateRawWhereQuery(ACCESSIBLE_USER_PROPERTIES, req.query))
+                .orderByRaw(util.generateOrderByStr(ACCESSIBLE_USER_PROPERTIES, req.query))
         } catch(e){
             resp.error = true
             resp.msg = e

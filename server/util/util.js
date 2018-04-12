@@ -14,10 +14,10 @@ module.exports = {
     },
 
     // returns raw text for sql query with flexible matching. Also escapes input chars
-    generateRawWhereQuery : (query = {}, allowedKeys = []) => {
+    generateRawWhereQuery : (allowedDataObj = {}, query = {}) => {
 
         // filter out unallowed keys
-        let arr = R.filter(i => allowedKeys.includes(i) , R.keys(query))
+        let arr = R.keys(R.pickBy((val, key) => allowedDataObj[key] && allowedDataObj[key].readable, query))
 
         return arr.reduce( (acc, val, index) => 
             {   
@@ -31,9 +31,9 @@ module.exports = {
     },
 
     // returns a string to be used in knex "order by" clause
-    generateOrderByStr : (query = {}, allowedKeys = []) => {
+    generateOrderByStr : (allowedDataObj = {}, query = {}) => {
         
-        return R.keys(query).includes('order_by') && allowedKeys.includes(query.order_by) ? 
+        return R.keys(query).includes('order_by') && allowedDataObj[query.order_by] && allowedDataObj[query.order_by].readable ? 
                 `${query.order_by} 
                     ${
                         query.dir && (query.dir.toUpperCase() == 'ASC' || query.dir.toUpperCase() == 'DESC') ? 
@@ -48,5 +48,5 @@ module.exports = {
     hasEmptyRequiredVals : (requiredKeys, data) => R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), data)),
     
     // filter out all unallowed keys in an object and trim each value
-    filterAndTrimData : (allowedDataObj, data) => R.map( i => i.trim(), R.pickBy((val, key) => allowedDataObj[key] , data))
+    filterAndTrimData : (allowedDataObj, data) => R.map( i => i.trim(), R.pickBy((val, key) => allowedDataObj[key] && allowedDataObj[key].writable, data))
 }

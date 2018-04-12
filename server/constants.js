@@ -1,30 +1,64 @@
 // list of constants that are used throughout the application
 module.exports = {
     API_BASE_ENDPOINT : '/api/v1',
-    // accessible user properties with property details
+    // accessible user properties with property details - readable and writable properties define what you can access in post data or get params
     ACCESSIBLE_USER_PROPERTIES: {
         'first_name': {
-            required : true
+            required : true,
+            readable: true,
+            writable : true
         }, 
         'last_name': {
-            required : true
+            required : true,
+            readable: true,
+            writable : true
         }, 
         'email': {
-            required : true
+            required : true,
+            readable: true,
+            writable : true
         },
          'bio': {
-            required : false
-         }
+            required : false,
+            readable: true,
+            writable : true
+         },
+         'created_on' : {
+            required : false,
+            readable: true,
+            writable : false
+         },
+         'updated_on' : {
+            required : false,
+            readable: true,
+            writable : false
+         },
     }, 
     ACCESSIBLE_BLOG_POST_PROPERTIES: {
         'title': {
-            required : true
+            required : true,
+            readable: true,
+            writable : true
         }, 
         'content': {
-            required : true
+            required : true,
+            readable: true,
+            writable : true
         }, 
         'user_id' : {
-            required : false
-        }
+            required : false,
+            readable: true,
+            writable : true
+        },
+        'created_on' : {
+            required : false,
+            readable: true,
+            writable : false
+         },
+         'updated_on' : {
+            required : false,
+            readable: true,
+            writable : false
+         },
     }, 
 }

@@ -50,7 +50,7 @@ module.exports = (chai, expect) => {
                     chai.request('http://localhost:4000')
                     .post(`${API_BASE_ENDPOINT}/users`)
                     .set('authorization', APP_SECRET_KEY)
-                    .send({first_name:'testing_new_user', last_name:'testing', email: 'valid@email.com', bio: 'testing', some_unallowed_key:'testing'})
+                    .send({first_name:'testing_new_user', last_name:'testing', email: 'valid@email.com', bio: 'testing', created_on:'testing'})
                     .end((err, res) => {  
                         expect(res.body.error).to.equal(false)
                         expect(res.body.data.length).to.equal(1)
