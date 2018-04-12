@@ -233,6 +233,27 @@ module.exports = (chai, expect) => {
             })
             
             // user is deleted  
+            describe(`DELETE - delete user - ${API_BASE_ENDPOINT}/users/:id`, () => {
+                it('should not allow deletion of a user if invalid authentication header is specified', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/users/${newUserId}`)
+                    .set('authorization', 'testing')
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('should allow deletion of a user if valid authentication header is specified', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/users/${newUserId}`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .end((err, res) => {  
+                        console.log('DELETE RESP', res.body)                      
+                        expect(res.body.error).to.equal(false)
+                        done()
+                    })
+                })
+            })
         })
     })
 }

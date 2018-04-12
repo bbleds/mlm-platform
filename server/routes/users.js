@@ -93,7 +93,6 @@ module.exports = (app, knex) => {
             (filteredData.email && !emailValidator.validate(filteredData.email)) 
         ) return res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key and a valid email address if you wish to update the email property', true))
         
-        // update user
         try{
             resp.data = await knex(table).where({id : req.params.id}).update(filteredData)
         } catch(e){
@@ -101,8 +100,22 @@ module.exports = (app, knex) => {
             resp.msg = e
         }
 
-        res.send(util.standardRes(resp.data, resp.msg, resp.error))
+        res.send(util.standardRes([{success : resp.data}], resp.msg, resp.error))
     })
 
     // delete a user
+    app.delete(`${API_BASE_ENDPOINT}/users/:id`,
+    generalRequestAuth,
+    async (req, res) => {
+        const resp = {}
+
+        try{
+            resp.data = await knex(table).where({id : req.params.id}).del()
+        } catch(e){
+            resp.error = true
+            resp.msg = e
+        }
+
+        res.send(util.standardRes([{success : resp.data}], resp.msg, resp.error))
+    })
 }

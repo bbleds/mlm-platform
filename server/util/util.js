@@ -3,6 +3,7 @@ const SqlString = require('sqlstring')
 const { USER_ACCESSIBLE_GET_PARAMS } = require('../constants')
 
 module.exports = {
+
     // returns object for standard responses from API
     standardRes : (data=[], msg = 'The operation was successful', error = false) => {
         return {
@@ -11,6 +12,7 @@ module.exports = {
             error
         }
     },
+
     // returns raw text for sql query with flexible matching. Also escapes input chars
     generateRawWhereQuery : (query = {}, allowedKeys = []) => {
 
@@ -27,6 +29,7 @@ module.exports = {
             ``
         )
     },
+
     // returns a string to be used in knex "order by" clause
     generateOrderByStr : (query = {}, allowedKeys = []) => {
         
@@ -40,8 +43,10 @@ module.exports = {
                 ` : 
                 'created_on DESC'
     },
+
     // returns an array of key names of any key value pairs that are required but contain empty values.
     hasEmptyRequiredVals : (requiredKeys, data) => R.keys(R.pickBy((val, key) => requiredKeys.includes(key) && !val.trim(), data)),
+    
     // filter out all unallowed keys in an object and trim each value
     filterAndTrimData : (allowedDataObj, data) => R.map( i => i.trim(), R.pickBy((val, key) => allowedDataObj[key] , data))
 }
