@@ -158,7 +158,7 @@ module.exports = (chai, expect) => {
                     .end((err, res) => {
                         expect(res.body.error).to.equal(false)
                         expect(res.body.data.length).to.not.equal(1)
-                        expect(res.body.data[0].first_name).to.equal('ben')
+                        expect(res.body.data[0].first_name).to.equal('another')
                         done()
                     })
                 })
@@ -225,7 +225,6 @@ module.exports = (chai, expect) => {
                     .set('authorization', APP_SECRET_KEY)
                     .send({first_name: 'Sally', last_name: 'lastNameHere', email: 'validemail@example.com', bio: 'updated bio', unallowed_key: 'this is an unallowed key'})
                     .end((err, res) => {
-                        console.log('UPDATE RESP IS', res.body)
                         expect(res.body.error).to.equal(false)
                         done()
                     })
@@ -247,8 +246,7 @@ module.exports = (chai, expect) => {
                     chai.request('http://localhost:4000')
                     .delete(`${API_BASE_ENDPOINT}/users/${newUserId}`)
                     .set('authorization', APP_SECRET_KEY)
-                    .end((err, res) => {  
-                        console.log('DELETE RESP', res.body)                      
+                    .end((err, res) => {                    
                         expect(res.body.error).to.equal(false)
                         done()
                     })

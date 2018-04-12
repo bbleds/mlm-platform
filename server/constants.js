@@ -1,5 +1,6 @@
 // list of constants that are used throughout the application
 module.exports = {
+    API_BASE_ENDPOINT : '/api/v1',
     // accessible user properties with property details
     ACCESSIBLE_USER_PROPERTIES: {
         'first_name': {
@@ -15,5 +16,15 @@ module.exports = {
             required : false
          }
     }, 
-    API_BASE_ENDPOINT : '/api/v1'
+    ACCESSIBLE_BLOG_POST_PROPERTIES: {
+        'title': {
+            required : true
+        }, 
+        'content': {
+            required : true
+        }, 
+        'user_id' : {
+            required : false
+        }
+    }, 
 }
