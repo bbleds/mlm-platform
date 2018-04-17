@@ -18,6 +18,7 @@ const table = 'blog_posts'
 const requiredKeys = R.keys(R.filter(i => i.required, ACCESSIBLE_BLOG_POST_PROPERTIES))
 
 module.exports = (app, knex) => {
+    
     // returns a list or filtered list of blog posts
     app.get(blogPostsEndpoint,
     async (req, res) => {
@@ -34,6 +35,21 @@ module.exports = (app, knex) => {
             resp.msg = e
         }
 
+        res.send(util.standardRes(resp.data, resp.msg, resp.error))
+    })
+
+    // returns a single blog post
+    app.get(`${blogPostsEndpoint}/:id`,
+    async (req, res) => {
+        let resp = {}
+
+        try {
+            resp.data = await knex(table).select().where({id:req.params.id})
+        }catch(e){
+            resp.error = true
+            resp.msg = e
+        }
+        
         res.send(util.standardRes(resp.data, resp.msg, resp.error))
     })
 
