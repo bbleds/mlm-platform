@@ -206,6 +206,16 @@ module.exports = (chai, expect) => {
                         done()
                     })
                 })
+                it('Should retrieve a single user by id through query params', done => {
+                    chai.request('http://localhost:4000')
+                    .get(`${API_BASE_ENDPOINT}/users?id=1`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .end((err, res) => {                        
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data.length).to.equal(1)
+                        done()
+                    })
+                })
             })
 
             // user is updated

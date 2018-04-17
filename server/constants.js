@@ -4,6 +4,11 @@ module.exports = {
     API_LIST_DEFAULT_LENGTH : 25,
     // accessible user properties with property details - readable and writable properties define what you can access in post data or get params
     ACCESSIBLE_USER_PROPERTIES: {
+        'id': {
+            required : false,
+            readable: true,
+            writable : false
+        }, 
         'first_name': {
             required : true,
             readable: true,
@@ -36,6 +41,11 @@ module.exports = {
          },
     }, 
     ACCESSIBLE_BLOG_POST_PROPERTIES: {
+        'id': {
+            required : false,
+            readable: true,
+            writable : false
+        },
         'title': {
             required : true,
             readable: true,

@@ -13,13 +13,15 @@ const {
     ACCESSIBLE_USER_PROPERTIES 
 }  = require('../constants')
 
+const usersEndpoint = `${API_BASE_ENDPOINT}/users`
+
 const table = 'users'
 const requiredKeys = R.keys(R.filter(i => i.required, ACCESSIBLE_USER_PROPERTIES))
 
 module.exports = (app, knex) => {
     
     // return all users or a filtered list of users
-    app.get(`${API_BASE_ENDPOINT}/users`,
+    app.get(usersEndpoint,
     generalRequestAuth,
     async (req, res) => {
         let resp = {}
@@ -38,7 +40,7 @@ module.exports = (app, knex) => {
     })
 
     // get single user
-    app.get(`${API_BASE_ENDPOINT}/users/:id`, 
+    app.get(`${usersEndpoint}/:id`, 
     generalRequestAuth,
     async (req, res) => {
         let resp = {}
@@ -54,7 +56,7 @@ module.exports = (app, knex) => {
     })
 
     // create a user
-    app.post(`${API_BASE_ENDPOINT}/users`,
+    app.post(usersEndpoint,
     generalRequestAuth,
     validateRequestBody,
     async (req, res) => {
@@ -81,7 +83,7 @@ module.exports = (app, knex) => {
     })
 
     // update a user
-    app.post(`${API_BASE_ENDPOINT}/users/:id`,
+    app.post(`${usersEndpoint}/:id`,
     generalRequestAuth,
     validateRequestBody,
     async (req, res) => {
@@ -92,10 +94,10 @@ module.exports = (app, knex) => {
         if (!R.keys(filteredData).length ||
             util.hasEmptyRequiredVals(requiredKeys, filteredData).length ||
             (filteredData.email && !emailValidator.validate(filteredData.email)) 
-        ) return res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key and a valid email address if you wish to update the email property', true))
+        ) return res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key if you wish to update a user', true))
         
         try{
-            resp.data = await knex(table).where({id : req.params.id}).update(filteredData)
+            resp.data = await knex(table).where({id : req.params.id}).update(R.assoc('updated_on', knex.fn.now(), filteredData))
         } catch(e){
             resp.error = true
             resp.msg = e
@@ -105,7 +107,7 @@ module.exports = (app, knex) => {
     })
 
     // delete a user
-    app.delete(`${API_BASE_ENDPOINT}/users/:id`,
+    app.delete(`${usersEndpoint}/:id`,
     generalRequestAuth,
     async (req, res) => {
         const resp = {}
