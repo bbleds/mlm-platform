@@ -118,6 +118,17 @@ module.exports = (chai, expect) => {
                     })
                 })
 
+                it('Shound not update a blog post if attempting to update by a id that does not exist', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/blog-posts/99999999`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({someKey:'testing', title:'z A change from original title z'})
+                    .end((err, res) => {    
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+
                 it('Shound update a blog post by id', done => {
                     chai.request('http://localhost:4000')
                     .post(`${API_BASE_ENDPOINT}/blog-posts/${newPostId}`)
@@ -128,8 +139,37 @@ module.exports = (chai, expect) => {
                         done()
                     })
                 })
+            })
 
-                // delete blog posts
+            // delete blog posts
+            describe(`DELETE blog posts - ${API_BASE_ENDPOINT}/blog-posts/:id`, () => {
+                it('Shound not delete a blog post if invalid headers are present', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/blog-posts/${newPostId}`)
+                    .set('authorization', 'testing')
+                    .end((err, res) => {    
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('Shound return an error if the blog post does not exist', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/blog-posts/99999999`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .end((err, res) => {    
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('Shound delete a blog post by id', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/blog-posts/${newPostId}`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .end((err, res) => {    
+                        expect(res.body.error).to.equal(false)
+                        done()
+                    })
+                })
             })
         })
     })

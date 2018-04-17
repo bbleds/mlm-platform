@@ -91,6 +91,9 @@ module.exports = (app, knex) => {
         const { body } = req
         const filteredData = util.filterAndTrimData(ACCESSIBLE_USER_PROPERTIES, body)
 
+        const existsResp = await util.checkRecordExists(knex, table, req.params.id)
+        if (existsResp.error) return res.send(util.standardRes([], existsResp.msg, true))
+
         if (!R.keys(filteredData).length ||
             util.hasEmptyRequiredVals(requiredKeys, filteredData).length ||
             (filteredData.email && !emailValidator.validate(filteredData.email)) 
@@ -111,6 +114,9 @@ module.exports = (app, knex) => {
     generalRequestAuth,
     async (req, res) => {
         const resp = {}
+
+        const existsResp = await util.checkRecordExists(knex, table, req.params.id)
+        if (existsResp.error) return res.send(util.standardRes([], existsResp.msg, true))
 
         try{
             resp.data = await knex(table).where({id : req.params.id}).del()

@@ -44,6 +44,27 @@ module.exports = {
                 'created_on DESC'
     },
 
+    // check that a record exists
+    checkRecordExists : async (knex, table, id) => {
+        let resp = {
+            msg: `A record exists with id ${id}`,
+            error: false
+        }
+
+        try{
+            resp.data = await knex(table).select().where({id : parseInt(id)})
+            if (!resp.data[0].id) {
+                resp.msg = `A record with this id does not exist in ${table}`
+                resp.error = true
+            }
+        }catch(e){
+            resp.error = true
+            resp.msg = e
+        }
+
+        return module.exports.standardRes([], resp.msg, resp.error)
+    },
+
     // generate a limit for use in a query
     generateLimit : query => query.limit ? parseInt(query.limit) : API_LIST_DEFAULT_LENGTH,
 

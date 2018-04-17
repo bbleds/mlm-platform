@@ -72,6 +72,9 @@ module.exports = (app, knex) => {
         const { body } = req
         const filteredData = util.filterAndTrimData(ACCESSIBLE_BLOG_POST_PROPERTIES, body)
 
+        const existsResp = await util.checkRecordExists(knex, table, req.params.id)
+        if (existsResp.error) return res.send(util.standardRes([], existsResp.msg, true))
+
         if (!R.keys(filteredData).length ||
             util.hasEmptyRequiredVals(requiredKeys, filteredData).length 
         ) return res.send(util.standardRes([], 'Please be sure to provide accepted values for at least one key if you wish to update a blog post', true))
@@ -87,4 +90,21 @@ module.exports = (app, knex) => {
     })
 
     // delete blog posts
+    app.delete(`${blogPostsEndpoint}/:id`,
+    generalRequestAuth,
+    async (req, res) => {
+        const resp = {}
+
+        const existsResp = await util.checkRecordExists(knex, table, req.params.id)
+        if (existsResp.error) return res.send(util.standardRes([], existsResp.msg, true))
+
+        try{
+            resp.data = await knex(table).where({id : req.params.id}).del()
+        } catch(e){
+            resp.error = true
+            resp.msg = e
+        }
+
+        res.send(util.standardRes([{success : resp.data}], resp.msg, resp.error))
+    })
 }

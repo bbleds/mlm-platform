@@ -239,6 +239,16 @@ module.exports = (chai, expect) => {
                         done()
                     })
                 })
+                it('should not allow updating of a user if a id is passed that does not exist', done => {
+                    chai.request('http://localhost:4000')
+                    .post(`${API_BASE_ENDPOINT}/users/9999999`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({first_name: '', last_name: 'lastNameHere', email: 'email@example.com', bio: 'updated bio', unallowed_key: 'this is an unallowed key'})
+                    .end((err, res) => {
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
                 it('should not allow updating of a user if invalid email is specified', done => {
                     chai.request('http://localhost:4000')
                     .post(`${API_BASE_ENDPOINT}/users/${newUserId}`)
@@ -268,6 +278,15 @@ module.exports = (chai, expect) => {
                     .delete(`${API_BASE_ENDPOINT}/users/${newUserId}`)
                     .set('authorization', 'testing')
                     .end((err, res) => {                        
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('should not allow deletion of a user if invalid id is passed in', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/users/9999999`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .end((err, res) => {                    
                         expect(res.body.error).to.equal(true)
                         done()
                     })
