@@ -6,6 +6,9 @@ exports.up = (knex, Promise) => {
         table.string('first_name').notNullable
         table.string('last_name').notNullable
         table.string('permissions').notNullable
+        table.string('google_id').notNullable
+        table.string('profile_img_url')
+        table.string('raw_google_api_response')
         table.string('email')
         table.string('bio')
         table.timestamp('created_on').defaultTo(knex.fn.now())

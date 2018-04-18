@@ -12,7 +12,7 @@ const fetchUserLogic = createLogic({
   type: FETCH_USER,
   async process({ getState, action }, dispatch, done){
     try{
-      const res = await axios.get('/api/auth/current_user')
+      const res = await axios.get('/api/v1/auth/current_user')
       console.log('RES IS ', res)
       completeLogic(dispatch, { type: FETCH_USER_SUCCESS, payload : res.data || false }, done)
     }
