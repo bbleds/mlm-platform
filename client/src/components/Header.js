@@ -9,7 +9,7 @@ export default class Header extends Component{
     let content
     switch (user){
       case false:
-        content = (<li><a href="/api/v1/auth/google">Login with Google</a></li>)
+        content = (<li><Link to="/login-or-register">Login or Register</Link></li>)
         break
       case null:
         content = (
