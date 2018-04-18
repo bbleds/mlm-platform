@@ -1,4 +1,8 @@
-import {createStore, compose, applyMiddleware} from 'redux'
+import {
+  createStore, 
+  compose, 
+  applyMiddleware
+} from 'redux'
 import { createLogicMiddleware } from 'redux-logic'
 import reducers from '../reducers'
 import logic from '../logic'
