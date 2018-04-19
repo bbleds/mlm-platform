@@ -49,7 +49,7 @@ export default class MemberMenuButton extends Component{
             onRequestClose={this.handleRequestClose}
             >
             <Menu>
-                <MenuItem><Link to="/dashboard">Dashboard</Link></MenuItem>
+                <MenuItem><Link to="/admin-dashboard">Dashboard</Link></MenuItem>
                 <MenuItem><Link to="/resources">Resources</Link></MenuItem>
             </Menu>
             </Popover>

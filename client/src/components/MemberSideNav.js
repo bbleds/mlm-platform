@@ -5,6 +5,7 @@ import {
     Avatar,
     Divider
 } from 'material-ui'
+import { Link } from 'react-router-dom'
 
 export default class DrawerSimpleExample extends React.Component {
 
@@ -27,7 +28,8 @@ export default class DrawerSimpleExample extends React.Component {
                 ""
              } 
             <Divider/>
-            <MenuItem>Users</MenuItem>
+            <Link to="/admin-dashboard"><MenuItem>Dashboard</MenuItem></Link>
+            <Link to="/admin-users"><MenuItem>Users</MenuItem></Link>
             <MenuItem>Blog Posts</MenuItem>
         </Drawer>
       </div>

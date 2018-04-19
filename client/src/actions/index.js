@@ -1,5 +1,7 @@
 import * as authActions from './authActions'
+import * as blogPostsActions from './blogPostsActions'
 
 export default {
-  ...authActions
+  ...authActions,
+  ...blogPostsActions
 }

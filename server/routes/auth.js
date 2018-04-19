@@ -13,7 +13,7 @@ module.exports = (app, knex) => {
   app.get(
     '/api/v1/auth/google/callback',
     passport.authenticate('google'),
-    (req, res) => res.redirect('/dashboard')
+    (req, res) => res.redirect('/admin-dashboard')
   )
 
   app.get('/api/v1/auth/current_user', (req, res) => {
