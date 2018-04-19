@@ -1,47 +1,35 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import {AppBar, Tabs, Tab, Toolbar} from 'material-ui'
+import AuthButton from './AuthButton'
+import { FlatButton } from 'material-ui'
 
 export default class Header extends Component{
 
   render(){
     const {user} = this.props
-
-    let content
-    switch (user){
-      case false:
-        content = (<li><Link to="/login-or-register">Login or Register</Link></li>)
-        break
-      case null:
-        content = (
-          <div className="preloader-wrapper small active">
-            <div className="spinner-layer spinner-blue-only">
-              <div className="circle-clipper left">
-                <div className="circle"></div>
-              </div><div className="gap-patch">
-                <div className="circle"></div>
-              </div><div className="circle-clipper right">
-                <div className="circle"></div>
-              </div>
-            </div>
-          </div>
-        )
-        break
-      default:
-        content = (<li><a href="/api/v1/auth/logout">Logout</a></li>)
-        break
+    const styles = {
+      padding : "10px",
+      color : `white`,
+      textAllign: 'center',
+      height : "100%"
     }
 
     return(
-      <nav>
-        <div className="nav-wrapper">
-          <Link to={ user ? '/dashboard' : '/'} className="left brand-logo">
-             App
-          </Link>
-          <ul id="nav-mobile" className="right hide-on-med-and-down">
-            {content}
-          </ul>
-        </div>
-      </nav>
+      <AppBar 
+        style={{margin:`0px`}}
+        showMenuIconButton={false}
+        title="Name"
+        iconElementRight={    
+          <div style={{position:'relative', height: '100%', top: "-4px"}}>
+            <Link to="/"><FlatButton style={styles}>Home</FlatButton></Link>
+            <FlatButton style={styles}>Blog</FlatButton>
+            <FlatButton style={styles}>Team</FlatButton>
+            <FlatButton style={styles}>Recipies</FlatButton>
+            <AuthButton user={user} style={styles}/>
+          </div>
+        }
+      />
     )
   }
 }

@@ -4,14 +4,17 @@ import {Provider} from 'react-redux'
 import {createStore, applyMiddleware } from 'redux'
 import configureStore from './store'
 import App from './containers/App.js'
-import 'materialize-css/dist/css/materialize.min.css'
-import 'materialize-css/dist/js/materialize.min.js'
+// import 'materialize-css/dist/css/materialize.min.css'
+// import 'materialize-css/dist/js/materialize.min.js'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const store = configureStore({})
 
 render(
   <Provider store={store}>
-    <App/>
+    <MuiThemeProvider>
+      <App/>
+    </MuiThemeProvider>
   </Provider>,
   document.querySelector('#root')
 )

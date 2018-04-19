@@ -44,11 +44,13 @@ module.exports = (app, knex) => {
 						last_name: profile.name.familyName,
 						google_id: profile.id,
 						raw_google_api_response: profile._raw,
-						profile_img_url: profile.photos[0] ? profile.photos[0].value.split('?')[0] : null
+						profile_img_url: profile.photos[0] ? profile.photos[0].value.split('?')[0] : null,
+						approved : false,
+						permissions : 'general'
 					})
 
 					const newUser = await knex('users').select().where({id:newUserCreationResp[0]})
-
+					// send email to admin that new user has been created 
 					done(null, newUser[0])
 	      }
 	      catch(error) {

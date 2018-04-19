@@ -11,6 +11,7 @@ exports.up = (knex, Promise) => {
         table.string('raw_google_api_response')
         table.string('email')
         table.string('bio')
+        table.boolean('approved')
         table.timestamp('created_on').defaultTo(knex.fn.now())
         table.timestamp('updated_on').defaultTo(knex.fn.now())
     })
