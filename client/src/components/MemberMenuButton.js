@@ -2,11 +2,11 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { 
     FlatButton,
-    RaisedButton,
     Popover,
     Menu,
     MenuItem
  } from 'material-ui'
+ import AccessAlarmIcon from '@material-ui/icons/ExpandMore'
 
 export default class MemberMenuButton extends Component{
     constructor(props) {
@@ -39,7 +39,7 @@ export default class MemberMenuButton extends Component{
                 style={this.props.style}
                 onClick={this.handleClick}
             >
-                Members
+                Members <AccessAlarmIcon/>
             </FlatButton>
             <Popover
             open={this.state.open}
@@ -49,8 +49,8 @@ export default class MemberMenuButton extends Component{
             onRequestClose={this.handleRequestClose}
             >
             <Menu>
-            <MenuItem><Link to="/dashboard">Dashboard</Link></MenuItem>
-            <MenuItem><Link to="/resources">Resources</Link></MenuItem>
+                <MenuItem><Link to="/dashboard">Dashboard</Link></MenuItem>
+                <MenuItem><Link to="/resources">Resources</Link></MenuItem>
             </Menu>
             </Popover>
          </div>) : 
@@ -59,12 +59,4 @@ export default class MemberMenuButton extends Component{
             content
         )
       }
-
-    // render(){
-    //     const {user, style} = this.props
-    //     const content = user ? <FlatButton style={style}>Members</FlatButton> : ''
-    //     return(
-    //         content
-    //     )
-    // }
 }

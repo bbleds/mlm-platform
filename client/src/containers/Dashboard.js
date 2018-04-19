@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
 import { Avatar } from 'material-ui'
 import actions from '../actions'
+import MemberSideNav from '../components/MemberSideNav'
 
 class Dashboard extends Component{
 	render(){
@@ -18,12 +19,13 @@ class Dashboard extends Component{
 						user === null ? (<div>Loading application</div>) :
 							(<div>
 									{
-										user.profile_img_url ? <Avatar src={user.profile_img_url} />	:
+										user.profile_img_url ? 
+										(<MemberSideNav user={user}/>	) :
 										''
 									}
 									<h1>Welcome, {user.first_name}</h1>
 									{
-										user.approved ? 
+										user.approved ?  
 										<h1>You are approved</h1> :
 										<h1>We are currently waiting on your account to be approved. Once it has been approved, you will receive an email and be able to access protected content. Thank you!</h1>
 									}
