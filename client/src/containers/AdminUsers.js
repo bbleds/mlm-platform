@@ -7,6 +7,10 @@ import actions from '../actions'
 import MemberSideNav from '../components/MemberSideNav'
 
 class AdminUsers extends Component{
+	componentDidMount(){
+    this.props.actions.fetchUsers()
+  }
+
 	render(){
 
 		const { user } = this.props
