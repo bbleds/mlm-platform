@@ -14,6 +14,14 @@ class AdminUsers extends Component{
 	render(){
 
 		const { user } = this.props
+		let users
+
+		let mockContent
+
+		if (this.props.users) {
+			users = this.props.users.data
+			mockContent = users.map((i) => <li key={i.id}>{i.first_name}</li>)
+		}
 
 		return(
 			<div>
@@ -28,7 +36,7 @@ class AdminUsers extends Component{
 									}
 									{
 										user.permissions == 'admin' && user.approved ?  
-										<h1>ADMIN</h1> :
+										<h1>{mockContent}</h1> :
 										<h1>We are currently waiting on your account to be approved. Once it has been approved, you will receive an email and be able to access protected content. Thank you!</h1>
 									}
 							</div>)
@@ -39,8 +47,12 @@ class AdminUsers extends Component{
 }
 
 const mapStateToProps = state => {
+	console.log('STATE', state);
+	
+
   return {
-    user: state.auth.user,
+		user : state.auth.user,
+		users : state.users.users
   }
 }
 

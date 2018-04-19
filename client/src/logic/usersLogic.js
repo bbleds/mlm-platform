@@ -24,7 +24,6 @@ const fetchUsersLogic = createLogic({
     }
     catch(err){
       const payload = 'Could not fetch users. Please try logging in again or contact support.'
-      // completeLogic(dispatch, { type: APP_ERROR, payload}, done)
       completeLogic(dispatch, { type: FETCH_USERS_FAILURE, payload : false }, done)
     }
   }
