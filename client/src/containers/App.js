@@ -26,7 +26,7 @@ class App extends Component {
            <Header user={user} />
            <Route exact path="/" component={Landing} />
            <Route exact path="/login-or-register" component={Auth} />
-           <Route path="/admin-dashboard" component={Dashboard} />
+           <Route path="/admin" component={Dashboard} />
           </div>
         </BrowserRouter>
       </div>

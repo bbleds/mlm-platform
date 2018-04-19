@@ -28,8 +28,8 @@ export default class DrawerSimpleExample extends React.Component {
                 ""
              } 
             <Divider/>
-            <Link to="/admin-dashboard"><MenuItem>Dashboard</MenuItem></Link>
-            <Link to="/admin-dashboard/users"><MenuItem>Users</MenuItem></Link>
+            <Link to="/admin"><MenuItem>Dashboard</MenuItem></Link>
+            <Link to="/admin/users"><MenuItem>Users</MenuItem></Link>
             <MenuItem>Blog Posts</MenuItem>
         </Drawer>
       </div>

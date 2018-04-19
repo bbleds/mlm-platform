@@ -31,7 +31,7 @@ class Dashboard extends Component{
 										<h1>You are approved</h1> :
 										<h1>We are currently waiting on your account to be approved. Once it has been approved, you will receive an email and be able to access protected content. Thank you!</h1>
 									}
-									<Route exact path="/admin-dashboard/users" component={AdminUsers} />
+									<Route exact path="/admin/users" component={AdminUsers} />
 							</div>)
 				}
 			</div>
