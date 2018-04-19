@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
+import { Avatar } from 'material-ui'
 import actions from '../actions'
 
 class Dashboard extends Component{
@@ -17,7 +18,7 @@ class Dashboard extends Component{
 						user === null ? (<div>Loading application</div>) :
 							(<div>
 									{
-										user.profile_img_url ? <img src={user.profile_img_url} />	:
+										user.profile_img_url ? <Avatar src={user.profile_img_url} />	:
 										''
 									}
 									<h1>Welcome, {user.first_name}</h1>

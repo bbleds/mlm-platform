@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import {AppBar, Tabs, Tab, Toolbar} from 'material-ui'
-import AuthButton from './AuthButton'
 import { FlatButton } from 'material-ui'
+import AuthButton from './AuthButton'
+import MemberMenuButton from './MemberMenuButton'
 
 export default class Header extends Component{
 
@@ -26,6 +27,7 @@ export default class Header extends Component{
             <FlatButton style={styles}>Blog</FlatButton>
             <FlatButton style={styles}>Team</FlatButton>
             <FlatButton style={styles}>Recipies</FlatButton>
+            <MemberMenuButton user={user} style={styles}/>
             <AuthButton user={user} style={styles}/>
           </div>
         }
