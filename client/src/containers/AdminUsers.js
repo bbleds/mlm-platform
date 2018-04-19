@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
 import { Avatar } from 'material-ui'
 import actions from '../actions'
-import MemberSideNav from '../components/MemberSideNav'
 
 class AdminUsers extends Component{
 	componentDidMount(){
@@ -29,11 +28,6 @@ class AdminUsers extends Component{
 					user === false ? (<Redirect to="/" />) :
 						user === null ? (<div>Loading application</div>) :
 							(<div>
-									{
-										user.profile_img_url ? 
-										<MemberSideNav user={user}/> :
-										<MemberSideNav/>
-									}
 									{
 										user.permissions == 'admin' && user.approved ?  
 										<h1>{mockContent}</h1> :
