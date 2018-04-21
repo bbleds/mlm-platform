@@ -8,6 +8,8 @@ import {
     Avatar,
     Divider
 } from 'material-ui'
+import {blue500, red500, greenA200} from 'material-ui/styles/colors'
+import Close from '@material-ui/icons/Close'
 import { Link } from 'react-router-dom'
 import actions from '../actions'
 
@@ -25,6 +27,7 @@ class SideNav extends Component {
           <AppBar
             title="Menu"
             onLeftIconButtonClick={() => this.props.actions.toggleNav()}
+            iconElementLeft={<Close color={'white'} viewBox="0 0 24 24" style={{width:"26px", height: "26px", margin: "10px", cursor: "pointer"}}/>}
           />
           <Link to="/"><MenuItem>Home</MenuItem></Link>
           <Link to="/"><MenuItem>Blog</MenuItem></Link>
