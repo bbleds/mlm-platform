@@ -5,7 +5,7 @@ import {createStore, applyMiddleware } from 'redux'
 import configureStore from './store'
 import App from './containers/App.js'
 import 'materialize-css/dist/css/materialize.min.css'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider } from 'material-ui/styles'
 
 const store = configureStore({})
 

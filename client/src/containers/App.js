@@ -20,7 +20,7 @@ class App extends Component {
     const { user } = this.props
 
     return (
-      <div className="container">
+      <div className="container" style={{margin:"0px auto", maxWidth:"100%", width:"100%"}}>
         <BrowserRouter>
           <div>
            <Header user={user} />

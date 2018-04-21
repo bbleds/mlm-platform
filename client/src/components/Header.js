@@ -18,7 +18,7 @@ export default class Header extends Component{
 
     return(
       <AppBar 
-        style={{margin:`0px`}}
+        style={{margin:`0px`, width:"100%"}}
         showMenuIconButton={false}
         title="Name"
         iconElementRight={    

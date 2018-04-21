@@ -18,14 +18,13 @@ class Dashboard extends Component{
 				{
 					user === false ? (<Redirect to="/" />) :
 						user === null ? (<div>Loading application</div>) :
-							(<div>
+							(<div className="container" style={{marginLeft:"280px"}}>
 								<h1>Coming from Dashboard</h1>
 									{
 										user.profile_img_url ? 
 										<MemberSideNav user={user}/> :
 										<MemberSideNav />
 									}
-									<h1>Welcome, {user.first_name}</h1>
 									{
 										user.approved ?  
 										<h1>You are approved</h1> :
