@@ -5,26 +5,19 @@ import { Redirect, Route } from 'react-router-dom'
 import { Avatar } from 'material-ui'
 import actions from '../actions'
 import AdminUsers from './AdminUsers'
-import MemberSideNav from '../components/MemberSideNav'
 
 class Dashboard extends Component{
 	render(){
 
 		const { user } = this.props
 
-
 		return(
 			<div>
 				{
 					user === false ? (<Redirect to="/" />) :
 						user === null ? (<div>Loading application</div>) :
-							(<div className="container" style={{marginLeft:"280px"}}>
+							(<div className="container" >
 								<h1>Coming from Dashboard</h1>
-									{
-										user.profile_img_url ? 
-										<MemberSideNav user={user}/> :
-										<MemberSideNav />
-									}
 									{
 										user.approved ?  
 										<h1>You are approved</h1> :

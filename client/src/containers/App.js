@@ -8,6 +8,7 @@ import Header from '../components/Header'
 import Landing from '../components/Landing'
 import Auth from '../components/Auth'
 import actions from '../actions'
+import SideNav from '../components/SideNav'
 
 
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
         <BrowserRouter>
           <div>
            <Header user={user} />
+           <SideNav user={user} />
            <Route exact path="/" component={Landing} />
            <Route exact path="/login-or-register" component={Auth} />
            <Route path="/admin" component={Dashboard} />

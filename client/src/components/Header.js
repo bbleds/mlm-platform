@@ -1,11 +1,14 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import {AppBar, Tabs, Tab, Toolbar} from 'material-ui'
 import { FlatButton } from 'material-ui'
+import actions from '../actions'
 import AuthButton from './AuthButton'
 import MemberMenuButton from './MemberMenuButton'
 
-export default class Header extends Component{
+class Header extends Component{
 
   render(){
     const {user} = this.props
@@ -19,15 +22,11 @@ export default class Header extends Component{
     return(
       <AppBar 
         style={{margin:`0px`, width:"100%"}}
-        showMenuIconButton={false}
         title="Name"
+        onLeftIconButtonClick={() => this.props.actions.toggleNav()}
         iconElementRight={    
           <div style={{position:'relative', height: '100%', top: "-4px"}}>
-            <Link to="/"><FlatButton style={styles}>Home</FlatButton></Link>
-            <FlatButton style={styles}>Blog</FlatButton>
-            <FlatButton style={styles}>Team</FlatButton>
-            <FlatButton style={styles}>Recipies</FlatButton>
-            <MemberMenuButton user={user} style={styles}/>
+            {/* <MemberMenuButton user={user} style={styles}/> */}
             <AuthButton user={user} style={styles}/>
           </div>
         }
@@ -35,3 +34,18 @@ export default class Header extends Component{
     )
   }
 }
+
+const mapStateToProps = state => {
+  console.log('state', state)
+  return {
+    navToggled : state.navToggled,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

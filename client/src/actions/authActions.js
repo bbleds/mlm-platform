@@ -1,7 +1,7 @@
 import {
-    FETCH_USER
-  } from '../constants'
-  
-  export const fetchUser = () => ({
-      type: FETCH_USER
-  })
+FETCH_USER
+} from '../constants'
+
+export const fetchUser = () => ({
+    type: FETCH_USER
+})
