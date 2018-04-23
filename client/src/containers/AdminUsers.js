@@ -19,9 +19,24 @@ import {
 import actions from '../actions'
 
 class AdminUsers extends Component{
+
+	constructor(props){
+    super(props)
+    this.handleRowSelection = this.handleRowSelection.bind(this)
+  }
+
 	componentDidMount(){
     this.props.actions.fetchUsers()
-  }
+	}
+	
+	handleRowSelection(rows){
+		console.log('Row was selected', rows)
+		let data = rows.map((item) => {
+			return this.props.users.data[item]
+		})
+
+		console.log(data)
+	}
 
 	render(){
 
@@ -50,7 +65,7 @@ class AdminUsers extends Component{
 														<ToolbarTitle text="Manage Users" />
 													</ToolbarGroup>
 												</Toolbar>
-												<Table>
+												<Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
 													<TableHeader>
 														<TableRow>
 															<TableHeaderColumn tooltip="The user's name">Name</TableHeaderColumn>
