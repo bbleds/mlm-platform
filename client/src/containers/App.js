@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {BrowserRouter, Route} from 'react-router-dom'
-import Dashboard from './Dashboard'
-import AdminUsers from './AdminUsers'
+import Admin from './Admin'
 import Header from '../components/Header'
 import Landing from '../components/Landing'
 import Auth from '../components/Auth'
@@ -28,7 +27,7 @@ class App extends Component {
            <SideNav user={user} />
            <Route exact path="/" component={Landing} />
            <Route exact path="/login-or-register" component={Auth} />
-           <Route path="/admin" component={Dashboard} />
+           <Route path="/admin" component={Admin} />
           </div>
         </BrowserRouter>
       </div>

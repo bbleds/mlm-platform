@@ -5,8 +5,9 @@ import { Redirect, Route } from 'react-router-dom'
 import { Avatar } from 'material-ui'
 import actions from '../actions'
 import AdminUsers from './AdminUsers'
+import Dashboard from '../components/Dashboard'
 
-class Dashboard extends Component{
+class Admin extends Component{
 	render(){
 
 		const { user } = this.props
@@ -17,12 +18,8 @@ class Dashboard extends Component{
 					user === false ? (<Redirect to="/" />) :
 						user === null ? (<div>Loading application</div>) :
 							(<div className="container" >
-								<h1>Coming from Dashboard</h1>
-									{
-										user.approved ?  
-										<h1>You are approved</h1> :
-										<h1>We are currently waiting on your account to be approved. Once it has been approved, you will receive an email and be able to access protected content. Thank you!</h1>
-									}
+								<h1>Admin</h1>
+									<Route exact path ='/admin' component={Dashboard} />
 									<Route exact path="/admin/users" component={AdminUsers} />
 							</div>)
 				}
@@ -43,4 +40,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Admin)
