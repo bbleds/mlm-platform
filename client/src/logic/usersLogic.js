@@ -6,6 +6,8 @@ import {
   FETCH_USERS,
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE,
+  SELECT_USERS,
+  SELECT_USERS_SUCCESS
  } from '../constants'
 
  import { APP_SECRET_KEY } from '../config'
@@ -29,6 +31,17 @@ const fetchUsersLogic = createLogic({
   }
 })
 
+const selectUsersLogic = createLogic({
+  type: SELECT_USERS,
+  process({ getState, action }, dispatch, done){
+      completeLogic(
+        dispatch, 
+        { type: SELECT_USERS_SUCCESS, payload : action.usersSelected.map(item => getState().users.users.data[item]) || [] }, 
+        done)
+  }
+})
+
 export default [
-  fetchUsersLogic
+  fetchUsersLogic,
+  selectUsersLogic
 ]

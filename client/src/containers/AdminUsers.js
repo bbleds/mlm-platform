@@ -26,84 +26,59 @@ class AdminUsers extends Component{
   }
 
 	componentDidMount(){
-    this.props.actions.fetchUsers()
+		this.props.actions.fetchUsers()
 	}
 	
 	handleRowSelection(rows){
-		console.log('Row was selected', rows)
-		let data = rows.map((item) => {
-			return this.props.users.data[item]
-		})
-
-		console.log(data)
+		this.setState({selectedRows: rows})
+		this.props.actions.selectUsers(rows)
 	}
 
 	render(){
-
 		const { user } = this.props
 		let users
 
-		let mockContent
-
-		if (this.props.users) {
-			users = this.props.users.data
-			mockContent = users.map((i) => <li key={i.id}>{i.first_name}</li>)
+		if (this.props.users.users) {
+			users = this.props.users.users.data
 		}
 
 		return(
 			<div>
 				{
-					user === false ? (<Redirect to="/" />) :
-						user === null ? (<div>Loading application</div>) :
-							(<div>
-									{
-										user.permissions == 'admin' && user.approved && users ?  
-										(
-											<Paper zDepth={1}>
-												<Toolbar>
-													<ToolbarGroup>
-														<ToolbarTitle text="Manage Users" />
-													</ToolbarGroup>
-												</Toolbar>
-												<Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
-													<TableHeader>
-														<TableRow>
-															<TableHeaderColumn tooltip="The user's name">Name</TableHeaderColumn>
-															<TableHeaderColumn tooltip="The user's email address">Email</TableHeaderColumn>
-															<TableHeaderColumn tooltip="The user's permissions">Permissions</TableHeaderColumn>
-															<TableHeaderColumn tooltip="The action you wish to apply">Actions</TableHeaderColumn>
-														</TableRow>
-													</TableHeader>
-													<TableBody>
-														{
-															users.map((i) => {
-																return (
-																	<TableRow key={i.id}>
-																		<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
-																		<TableRowColumn>{i.email}</TableRowColumn>
-																		<TableRowColumn>{i.permissions}</TableRowColumn>
-																		<TableRowColumn>
-																			<Link to="/"><RaisedButton primary={true} label="Edit" /></Link>
-																			<Link to="/"><RaisedButton secondary={true} label="Delete" /></Link>
-																		</TableRowColumn>
-																	</TableRow>
-																)
-															})
-														}
-													</TableBody>
-													<TableFooter adjustForCheckbox={false}>
-															<TableRow>
-																<TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
-																	Display Delete Selected button here
-																</TableRowColumn>
-															</TableRow>
-														</TableFooter>
-												</Table>
-											</Paper>
-										) :
-										<div>Loading application</div>
-									}
-							</div>)
+					users ? 
+						<Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
+							<Toolbar>
+								<ToolbarGroup>
+									<ToolbarTitle text="Users"/>
+								</ToolbarGroup>
+							</Toolbar>
+							<TableHeader>
+								<TableRow>
+									<TableHeaderColumn>Name</TableHeaderColumn>
+									<TableHeaderColumn>Email</TableHeaderColumn>
+									<TableHeaderColumn>Permissions</TableHeaderColumn>
+									<TableHeaderColumn>Actions</TableHeaderColumn>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{
+										users.map((i, index) => {
+											return (
+												<TableRow key={i.id} selected={this.state && this.state.selectedRows.indexOf(index) !== -1} >
+													<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
+													<TableRowColumn>{i.email}</TableRowColumn>
+													<TableRowColumn>{i.permissions}</TableRowColumn>
+													<TableRowColumn>
+														<RaisedButton label="Edit" primary={true} />
+														<RaisedButton label="Delete" secondary={true} />
+													</TableRowColumn>
+												</TableRow>
+											)
+										})
+								}
+							</TableBody>
+						</Table> : 
+						<h1>Loading...</h1>
 				}
 			</div>
 		)
@@ -111,12 +86,11 @@ class AdminUsers extends Component{
 }
 
 const mapStateToProps = state => {
-	console.log('STATE', state);
-	
+	console.log('STATE', state)
 
   return {
 		user : state.auth.user,
-		users : state.users.users
+		users : state.users
   }
 }
 

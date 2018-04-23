@@ -1,10 +1,13 @@
 import {
     FETCH_USERS_SUCCESS,
-    FETCH_USERS_FAILURE
+    FETCH_USERS_FAILURE,
+    SELECT_USERS_SUCCESS,
+    SELECT_USERS_FAILURE
    } from '../constants'
   
   const initialState = {
-    users : null
+    users : null,
+    selectedUsers : []
   }
   
   export default (state = initialState, action) => {
@@ -18,6 +21,16 @@ import {
         return {
           ...state,
           users: false
+        }
+        case SELECT_USERS_SUCCESS:
+        return {
+          ...state,
+          selectedUsers : action.payload
+        }
+        case SELECT_USERS_FAILURE:
+        return {
+          ...state,
+          selectedUsers : state.selectedUsers
         }
       default:
         return state
