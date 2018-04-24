@@ -39,8 +39,8 @@ class AdminUsers extends Component{
 		let users
 
 		if (this.props.users.users) {
-			users = this.props.users.users.data
-		}
+			users = this.props.users.users.data.filter(i=>i.id !== user.id)
+		}	
 
 		return(
 			<div>
@@ -64,29 +64,29 @@ class AdminUsers extends Component{
 								<TableBody deselectOnClickaway={false}>
 									{
 											users.map((i, index) => {
-												return (
-													<TableRow key={i.id} selected={this.state && this.state.selectedRows.indexOf(index) !== -1} >
-														<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
-														<TableRowColumn>{i.email}</TableRowColumn>
-														<TableRowColumn>{i.permissions}</TableRowColumn>
-														<TableRowColumn>
-															<div onClick={(e)=>{
-																e.preventDefault()
-																e.stopPropagation()
-															}}>
-																<RaisedButton 
-																	label="Edit" 
-																	primary={true} 
-																/>
-																<RaisedButton 
-																	label="Delete" 
-																	secondary={true} 
-																	onClick={()=>this.props.actions.deleteUsers([i.id])}
-																/>
-															</div>
-														</TableRowColumn>
-													</TableRow>
-												)
+											return (
+												<TableRow key={i.id} selected={this.state && this.state.selectedRows.indexOf(index) !== -1} >
+													<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
+													<TableRowColumn>{i.email}</TableRowColumn>
+													<TableRowColumn>{i.permissions}</TableRowColumn>
+													<TableRowColumn>
+														<div onClick={(e)=>{
+															e.preventDefault()
+															e.stopPropagation()
+														}}>
+															<RaisedButton 
+																label="Edit" 
+																primary={true} 
+															/>
+															<RaisedButton 
+																label="Delete" 
+																secondary={true} 
+																onClick={()=>this.props.actions.deleteUsers([i.id])}
+															/>
+														</div>
+													</TableRowColumn>
+												</TableRow>
+											)
 											})
 									}
 								</TableBody>

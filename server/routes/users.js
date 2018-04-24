@@ -127,4 +127,22 @@ module.exports = (app, knex) => {
 
         res.send(util.standardRes([{success : resp.data}], resp.msg, resp.error))
     })
+
+    // delete multiple users - can also function as a delete method for a single user
+    app.delete(`${usersEndpoint}`,
+    generalRequestAuth,
+    validateRequestBody,
+    async (req, res) => {
+        const resp = {}
+        
+        try{
+            res.data = await knex.raw(`DELETE FROM ${table} WHERE id in (?)`,[req.body.ids.split(',')])
+        }
+        catch(e){
+            resp.error = true
+            resp.msg = e
+        }
+
+        res.send(util.standardRes([{success : resp.data}], resp.msg, resp.error))
+    })
 }
