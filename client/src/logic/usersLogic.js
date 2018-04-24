@@ -36,7 +36,15 @@ const selectUsersLogic = createLogic({
   process({ getState, action }, dispatch, done){
       completeLogic(
         dispatch, 
-        { type: SELECT_USERS_SUCCESS, payload : action.usersSelected.map(item => getState().users.users.data[item]) || [] }, 
+        { 
+          type: SELECT_USERS_SUCCESS, 
+          payload : 
+            action.usersSelected === 'all' ? 
+              getState().users.users.data : 
+                action.usersSelected === 'none' ?
+                  [] :
+                  action.usersSelected.map(i => getState().users.users.data[i])
+        }, 
         done)
   }
 })

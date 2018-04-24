@@ -30,7 +30,7 @@ class AdminUsers extends Component{
 	}
 	
 	handleRowSelection(rows){
-		this.setState({selectedRows: rows})
+		this.setState({selectedRows: rows}) // this is a work around for material ui tables - table is re-rendered for complex actions
 		this.props.actions.selectUsers(rows)
 	}
 
@@ -83,17 +83,6 @@ class AdminUsers extends Component{
 											})
 									}
 								</TableBody>
-								{/* <TableFooter adjustForCheckbox={false} onClick={e => {e.preventDefault(); e.stop}}>
-									<TableRow>
-										<TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
-											{
-												this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
-													<RaisedButton secondary={true} label="Delete Selected" /> :
-													"Bulk actions will appear here"
-											}
-										</TableRowColumn>
-									</TableRow>
-								</TableFooter> */}
 							</Table>
 							<Toolbar>
 								<ToolbarGroup>
