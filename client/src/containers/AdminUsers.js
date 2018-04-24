@@ -61,7 +61,7 @@ class AdminUsers extends Component{
 										<TableHeaderColumn>Actions</TableHeaderColumn>
 									</TableRow>
 								</TableHeader>
-								<TableBody>
+								<TableBody deselectOnClickaway={false}>
 									{
 											users.map((i, index) => {
 												return (
@@ -70,26 +70,40 @@ class AdminUsers extends Component{
 														<TableRowColumn>{i.email}</TableRowColumn>
 														<TableRowColumn>{i.permissions}</TableRowColumn>
 														<TableRowColumn>
-															<RaisedButton label="Edit" primary={true} />
-															<RaisedButton label="Delete" secondary={true} />
+															<div onClick={(e)=>{
+																e.preventDefault()
+																e.stopPropagation()
+															}}>
+																<RaisedButton label="Edit" primary={true} />
+																<RaisedButton label="Delete" secondary={true} />
+															</div>
 														</TableRowColumn>
 													</TableRow>
 												)
 											})
 									}
 								</TableBody>
-								<TableFooter adjustForCheckbox={false}>
+								{/* <TableFooter adjustForCheckbox={false} onClick={e => {e.preventDefault(); e.stop}}>
 									<TableRow>
 										<TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
 											{
 												this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
 													<RaisedButton secondary={true} label="Delete Selected" /> :
-													"Footer"
+													"Bulk actions will appear here"
 											}
 										</TableRowColumn>
 									</TableRow>
-								</TableFooter>
+								</TableFooter> */}
 							</Table>
+							<Toolbar>
+								<ToolbarGroup>
+									{
+										this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
+											<RaisedButton secondary={true} label="Delete Selected" /> :
+											""
+									}
+								</ToolbarGroup>
+							</Toolbar>
 						</Paper> : 
 						<h1>Loading...</h1>
 				}
