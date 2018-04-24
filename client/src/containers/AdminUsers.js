@@ -46,38 +46,51 @@ class AdminUsers extends Component{
 			<div>
 				{
 					users ? 
-						<Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
+						<Paper>
 							<Toolbar>
 								<ToolbarGroup>
 									<ToolbarTitle text="Users"/>
 								</ToolbarGroup>
 							</Toolbar>
-							<TableHeader>
-								<TableRow>
-									<TableHeaderColumn>Name</TableHeaderColumn>
-									<TableHeaderColumn>Email</TableHeaderColumn>
-									<TableHeaderColumn>Permissions</TableHeaderColumn>
-									<TableHeaderColumn>Actions</TableHeaderColumn>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{
-										users.map((i, index) => {
-											return (
-												<TableRow key={i.id} selected={this.state && this.state.selectedRows.indexOf(index) !== -1} >
-													<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
-													<TableRowColumn>{i.email}</TableRowColumn>
-													<TableRowColumn>{i.permissions}</TableRowColumn>
-													<TableRowColumn>
-														<RaisedButton label="Edit" primary={true} />
-														<RaisedButton label="Delete" secondary={true} />
-													</TableRowColumn>
-												</TableRow>
-											)
-										})
-								}
-							</TableBody>
-						</Table> : 
+							<Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
+								<TableHeader>
+									<TableRow>
+										<TableHeaderColumn>Name</TableHeaderColumn>
+										<TableHeaderColumn>Email</TableHeaderColumn>
+										<TableHeaderColumn>Permissions</TableHeaderColumn>
+										<TableHeaderColumn>Actions</TableHeaderColumn>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{
+											users.map((i, index) => {
+												return (
+													<TableRow key={i.id} selected={this.state && this.state.selectedRows.indexOf(index) !== -1} >
+														<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
+														<TableRowColumn>{i.email}</TableRowColumn>
+														<TableRowColumn>{i.permissions}</TableRowColumn>
+														<TableRowColumn>
+															<RaisedButton label="Edit" primary={true} />
+															<RaisedButton label="Delete" secondary={true} />
+														</TableRowColumn>
+													</TableRow>
+												)
+											})
+									}
+								</TableBody>
+								<TableFooter adjustForCheckbox={false}>
+									<TableRow>
+										<TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
+											{
+												this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
+													<RaisedButton secondary={true} label="Delete Selected" /> :
+													"Footer"
+											}
+										</TableRowColumn>
+									</TableRow>
+								</TableFooter>
+							</Table>
+						</Paper> : 
 						<h1>Loading...</h1>
 				}
 			</div>
