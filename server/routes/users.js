@@ -135,14 +135,18 @@ module.exports = (app, knex) => {
     async (req, res) => {
         const resp = {}
         
+        const ids = req.body.ids ? req.body.ids.split(',').map(i=>i.trim()) : []
+
+        if(!ids.length) return res.send(util.standardRes([], `Please provide the ids you wish to delete from ${table}`, true))
+
         try{
-            res.data = await knex.raw(`DELETE FROM ${table} WHERE id in (?)`,[req.body.ids.split(',')])
+            resp.data = await knex.raw(`DELETE FROM ${table} WHERE id in (?)`,[ids])
         }
         catch(e){
             resp.error = true
             resp.msg = e
         }
 
-        res.send(util.standardRes([{success : resp.data}], resp.msg, resp.error))
+        res.send(util.standardRes([{success : resp.data[0].affectedRows > 0 ? 1 : 0}], resp.msg, resp.error))
     })
 }
