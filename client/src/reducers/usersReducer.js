@@ -2,7 +2,9 @@ import {
     FETCH_USERS_SUCCESS,
     FETCH_USERS_FAILURE,
     SELECT_USERS_SUCCESS,
-    SELECT_USERS_FAILURE
+    SELECT_USERS_FAILURE,
+    DELETE_USERS_SUCCESS,
+    DELETE_USERS_FAILURE
    } from '../constants'
   
   const initialState = {
@@ -31,6 +33,16 @@ import {
         return {
           ...state,
           selectedUsers : state.selectedUsers
+        }
+        case DELETE_USERS_SUCCESS:
+        return {
+          ...state,
+          selectedUsers : []
+        }
+        case DELETE_USERS_FAILURE:
+        return {
+          ...state,
+          selectedUsers : []
         }
       default:
         return state

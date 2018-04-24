@@ -74,8 +74,15 @@ class AdminUsers extends Component{
 																e.preventDefault()
 																e.stopPropagation()
 															}}>
-																<RaisedButton label="Edit" primary={true} />
-																<RaisedButton label="Delete" secondary={true} />
+																<RaisedButton 
+																	label="Edit" 
+																	primary={true} 
+																/>
+																<RaisedButton 
+																	label="Delete" 
+																	secondary={true} 
+																	onClick={()=>this.props.actions.deleteUsers([i.id])}
+																/>
 															</div>
 														</TableRowColumn>
 													</TableRow>
@@ -88,7 +95,11 @@ class AdminUsers extends Component{
 								<ToolbarGroup>
 									{
 										this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
-											<RaisedButton secondary={true} label="Delete Selected" /> :
+											<RaisedButton 
+												secondary={true} 
+												label="Delete Selected" 
+												onClick={()=>this.props.actions.deleteUsers(this.props.users.selectedUsers.map(i=>i.id))}
+											/> :
 											""
 									}
 								</ToolbarGroup>
