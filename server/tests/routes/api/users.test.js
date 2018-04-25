@@ -301,6 +301,40 @@ module.exports = (chai, expect) => {
                     })
                 })
             })
+
+            // allows multiple deletions
+            describe(`DELETE - delete users - ${API_BASE_ENDPOINT}/users`, ()=>{
+                it('should not allow deletion of user records if invalid authentication header is present', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/users/${newUserId}`)
+                    .set('authorization', 'testing')
+                    .end((err, res) => {                     
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('should not allow deletion of a user if no ids are passed in', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({ids:''})
+                    .end((err, res) => {                   
+                        expect(res.body.error).to.equal(true)
+                        done()
+                    })
+                })
+                it('should allow deletion of a user if valid id is passed in', done => {
+                    chai.request('http://localhost:4000')
+                    .delete(`${API_BASE_ENDPOINT}/users`)
+                    .set('authorization', APP_SECRET_KEY)
+                    .send({ids: `${newUserId}`})
+                    .end((err, res) => {                    
+                        expect(res.body.error).to.equal(false)
+                        expect(res.body.data[0].success).to.equal(0)
+                        done()
+                    })
+                })
+            })
         })
     })
 }

@@ -9,7 +9,8 @@ import {
   SELECT_USERS,
   SELECT_USERS_SUCCESS,
   DELETE_USERS,
-  DELETE_USERS_SUCCESS
+  DELETE_USERS_SUCCESS,
+  DELETE_USERS_FAILURE
  } from '../constants'
 
  import { APP_SECRET_KEY } from '../config'
@@ -54,19 +55,25 @@ const selectUsersLogic = createLogic({
 const deleteUsersLogic = createLogic({
   type: DELETE_USERS,
   async process({ getState, action }, dispatch, done){
-    console.log('Made it here', action)
     try{
-      // const res = await axios.get('/api/v1/users' , {
-      //     headers : {
-      //       Authorization : APP_SECRET_KEY
-      //     }
-      // })
-      // console.log('RES IS ', res)
-      // completeLogic(dispatch, { type: FETCH_USERS_SUCCESS, payload : res.data || false }, done)
+      console.log(action)
+      const res = await axios.delete('/api/v1/users' , {
+          headers : {
+            Authorization : APP_SECRET_KEY
+          },
+          data: {
+            ids: action.userIds.join(',')
+          }
+      })
+      
+      dispatch({ type: DELETE_USERS_SUCCESS, payload :  [] })
+      dispatch({ type: FETCH_USERS })
+      done()
+      
     }
     catch(err){
-      // const payload = 'Could not fetch users. Please try logging in again or contact support.'
-      // completeLogic(dispatch, { type: FETCH_USERS_FAILURE, payload : false }, done)
+      const payload = 'Could not fetch users. Please try logging in again or contact support.'
+      completeLogic(dispatch, { type: DELETE_USERS_FAILURE, payload }, done)
     }
   }
 })
