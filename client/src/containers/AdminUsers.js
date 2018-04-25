@@ -28,7 +28,8 @@ class AdminUsers extends Component{
 	render(){
 		const { user } = this.props
 		const users = this.props.users.users ? this.props.users.users.data.filter(i=>i.id !== user.id) : []
-		console.log('USERS', users)
+		const headerCols = ['Name', 'Email', 'Permissions', 'Actions']
+
 		const bodyContent = users && users.length ?
 			users.map((i, index) => {
 				return (
@@ -107,6 +108,8 @@ class AdminUsers extends Component{
 				users ? 
 					users.length > 0 ? 
 						<TableList
+							title={'Users'}
+							headerCols={headerCols}
 							onRowSelection = {(rows) => this.props.actions.selectUsers(rows)}
 							bodyContent={bodyContent}
 							footerContent={footerContent}

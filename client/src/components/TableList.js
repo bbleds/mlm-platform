@@ -19,7 +19,9 @@ import actions from '../actions'
 export default class TableList extends Component{
 
 	render(){
-		const { 
+		const {
+            title,
+            headerCols,
             multiSelectable,
             onRowSelection,
             deselectOnClickaway,
@@ -32,7 +34,7 @@ export default class TableList extends Component{
                 <Toolbar>
                     <ToolbarGroup>
                         <ToolbarTitle 
-                            text="Users"
+                            text={title || "Default"}
                         />
                     </ToolbarGroup>
                 </Toolbar>
@@ -42,10 +44,7 @@ export default class TableList extends Component{
                 >
                     <TableHeader>
                         <TableRow>
-                            <TableHeaderColumn>Name</TableHeaderColumn>
-                            <TableHeaderColumn>Email</TableHeaderColumn>
-                            <TableHeaderColumn>Permissions</TableHeaderColumn>
-                            <TableHeaderColumn>Actions</TableHeaderColumn>
+                            { headerCols.map((i, index)=> <TableHeaderColumn key={index}>{i}</TableHeaderColumn>) }
                         </TableRow>
                     </TableHeader>
                     <TableBody 
