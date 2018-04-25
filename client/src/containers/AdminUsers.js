@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 import { 
 	Table,
 	TableHeader,
@@ -45,10 +46,12 @@ class AdminUsers extends Component{
 								e.preventDefault()
 								e.stopPropagation()
 							}}>
-								<RaisedButton 
-									label="Edit" 
-									primary={true} 
-								/>
+								<Link to={`/admin/users/${i.id}`}>
+									<RaisedButton 
+										label="Edit" 
+										primary={true} 
+									/>
+								</Link>
 								<RaisedButton 
 									label="Delete" 
 									secondary={true} 

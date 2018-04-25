@@ -6,6 +6,7 @@ import { Avatar } from 'material-ui'
 import actions from '../actions'
 import AdminUsers from './AdminUsers'
 import Dashboard from '../components/Dashboard'
+import AdminUsersEdit from '../components/AdminUsersEdit'
 
 class Admin extends Component{
 	render(){
@@ -21,6 +22,7 @@ class Admin extends Component{
 								<h1>Admin</h1>
 									<Route exact path ='/admin' component={Dashboard} />
 									<Route exact path="/admin/users" component={AdminUsers} />
+									<Route exact path="/admin/users/:id" component={AdminUsersEdit} />
 							</div>)
 				}
 			</div>
