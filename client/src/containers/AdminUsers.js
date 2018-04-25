@@ -30,7 +30,6 @@ class AdminUsers extends Component{
 	}
 	
 	handleRowSelection(rows){
-		this.setState({selectedRows: rows}) // this is a work around for material ui tables - table is re-rendered for complex actions
 		this.props.actions.selectUsers(rows)
 	}
 
@@ -65,7 +64,10 @@ class AdminUsers extends Component{
 									{
 											users.map((i, index) => {
 											return (
-												<TableRow key={i.id} selected={this.state && this.state.selectedRows.indexOf(index) !== -1} >
+												<TableRow 
+													key={i.id} 
+													selected={this.props.users.selectedUsers.filter(x => x.id === i.id).length > 0} 
+												>
 													<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
 													<TableRowColumn>{i.email}</TableRowColumn>
 													<TableRowColumn>{i.permissions}</TableRowColumn>

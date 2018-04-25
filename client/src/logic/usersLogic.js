@@ -24,8 +24,9 @@ const fetchUsersLogic = createLogic({
             Authorization : APP_SECRET_KEY
           }
       })
-      console.log('RES IS ', res)
-      completeLogic(dispatch, { type: FETCH_USERS_SUCCESS, payload : res.data || false }, done)
+
+      res.data.data = res.data.data.filter((i)=>i.id!==getState().auth.user.id)
+      completeLogic(dispatch, { type: FETCH_USERS_SUCCESS, payload : res.data }, done)
     }
     catch(err){
       const payload = 'Could not fetch users. Please try logging in again or contact support.'
