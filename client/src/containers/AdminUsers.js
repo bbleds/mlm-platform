@@ -84,7 +84,6 @@ class AdminUsers extends Component{
 															<RaisedButton 
 																label="Delete" 
 																secondary={true} 
-																// onClick={()=>this.props.actions.deleteUsers([i.id])}
 																onClick={() => {
 																	this.props.actions.toggleModal(
 																		'Confirm Delete',
@@ -101,7 +100,7 @@ class AdminUsers extends Component{
 																			}}
 																		/>
 																		</div>),
-																		(<p>Are you sure you want to delete this user?</p>)
+																		(<p>This cannot be undone and will erase this user and all associated data. Are you sure you want to delete user "{i.first_name} {i.last_name}"?</p>)
 																	)
 																}}
 															/>
@@ -120,7 +119,25 @@ class AdminUsers extends Component{
 											<RaisedButton 
 												secondary={true} 
 												label="Delete Selected" 
-												onClick={()=>this.props.actions.deleteUsers(this.props.users.selectedUsers.map(i=>i.id))}
+												onClick={()=>{
+													this.props.actions.toggleModal(
+														'Confirm Delete',
+														(<div>
+														<FlatButton
+															label="Cancel"
+															onClick={() => this.props.actions.toggleModal()}
+														/>
+														<FlatButton 
+															label="Confirm" 
+															onClick={() => {
+																this.props.actions.deleteUsers(this.props.users.selectedUsers.map(i=>i.id))
+																this.props.actions.toggleModal()
+															}}
+														/>
+														</div>),
+														(<p>This cannot be undone and will erase the selected user(s) and all associated data. Are you sure you want to delete the selected users? </p>)
+													)
+												}}
 											/> :
 											""
 									}

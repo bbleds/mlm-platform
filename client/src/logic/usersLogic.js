@@ -10,7 +10,9 @@ import {
   SELECT_USERS_SUCCESS,
   DELETE_USERS,
   DELETE_USERS_SUCCESS,
-  DELETE_USERS_FAILURE
+  DELETE_USERS_FAILURE,
+  TOGGLE_MODAL,
+  TOGGLE_NOTIFICATION
  } from '../constants'
 
  import { APP_SECRET_KEY } from '../config'
@@ -69,6 +71,12 @@ const deleteUsersLogic = createLogic({
       
       dispatch({ type: DELETE_USERS_SUCCESS, payload :  [] })
       dispatch({ type: FETCH_USERS })
+      dispatch({ 
+        type: TOGGLE_NOTIFICATION, 
+        payload : {
+          message : action.userIds.length > 1 ? 'Deleted Users Successfully' : "Deleted User Successfully"
+        }
+      })
       done()
       
     }
