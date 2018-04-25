@@ -14,6 +14,7 @@ import {
 	ToolbarGroup,
 	ToolbarTitle,
 	RaisedButton,
+	FlatButton,
 	Paper
 } from 'material-ui'
 import actions from '../actions'
@@ -83,7 +84,26 @@ class AdminUsers extends Component{
 															<RaisedButton 
 																label="Delete" 
 																secondary={true} 
-																onClick={()=>this.props.actions.deleteUsers([i.id])}
+																// onClick={()=>this.props.actions.deleteUsers([i.id])}
+																onClick={() => {
+																	this.props.actions.toggleModal(
+																		'Confirm Delete',
+																		(<div>
+																		<FlatButton
+																			label="Cancel"
+																			onClick={() => this.props.actions.toggleModal()}
+																		/>
+																		<FlatButton 
+																			label="Confirm" 
+																			onClick={() => {
+																				this.props.actions.deleteUsers([i.id])
+																				this.props.actions.toggleModal()
+																			}}
+																		/>
+																		</div>),
+																		(<p>Are you sure you want to delete this user?</p>)
+																	)
+																}}
 															/>
 														</div>
 													</TableRowColumn>

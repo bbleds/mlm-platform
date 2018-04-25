@@ -8,6 +8,7 @@ import Landing from '../components/Landing'
 import Auth from '../components/Auth'
 import actions from '../actions'
 import SideNav from '../components/SideNav'
+import Modal from '../components/Modal'
 
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
           <div>
            <Header user={user} />
            <SideNav user={user} />
+           <Modal/>
            <Route exact path="/" component={Landing} />
            <Route exact path="/login-or-register" component={Auth} />
            <Route path="/admin" component={Admin} />
