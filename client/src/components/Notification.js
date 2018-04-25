@@ -11,12 +11,17 @@ import actions from '../actions'
 class Notification extends Component {
 
   render() {
-    return (<Snackbar
-        message={this.props.notification.message}
-        open={this.props.notification.open}
-        autoHideDuration={this.props.notification.autoHideDuration}
-        onRequestClose={this.props.actions.toggleNotification}
-    />)
+
+    const { notification } = this.props
+
+    return (
+      <Snackbar
+          message={this.props.notification.message}
+          open={this.props.notification.open}
+          autoHideDuration={this.props.notification.autoHideDuration}
+          onRequestClose={this.props.actions.toggleNotification}
+      />
+    )
   }
 }
 

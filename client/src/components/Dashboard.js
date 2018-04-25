@@ -13,8 +13,8 @@ class Dashboard extends Component{
 		return(
 			<div>
 				{
-                    (<div>Coming from Dashboard. send general message and styling here</div>)
-                }
+          (<div>Coming from Dashboard. send general message and styling here</div>)
+        }
 			</div>
 		)
 	}

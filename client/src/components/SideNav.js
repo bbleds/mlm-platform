@@ -16,7 +16,6 @@ import actions from '../actions'
 class SideNav extends Component {
 
   render() {
-    console.log('in render method', this.props)
     const { user } = this.props
 
     return (
@@ -55,7 +54,6 @@ class SideNav extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('state', state)
   return {
     navToggled : state.navToggled,
   }

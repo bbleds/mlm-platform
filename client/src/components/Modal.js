@@ -11,26 +11,23 @@ import actions from '../actions'
 class Modal extends Component {
 
   render() {
-    return (<Dialog
-        title={this.props.modal.title}
-        modal={true}
-        open={this.props.modal.open}
-        actions={this.props.modal.actions}
-        children={this.props.modal.children}
-    />)
+
+    const { modal } = this.props
+
+    return (
+      <Dialog
+          modal={true}
+          title={modal.title}
+          open={modal.open}
+          actions={modal.actions}
+          children={modal.children}
+      />
+    )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    modal : state.modal,
-  }
-}
+const mapStateToProps = state => ({ modal : state.modal })
 
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(actions, dispatch),
-  }
-}
+const mapDispatchToProps = dispatch => ({actions: bindActionCreators(actions, dispatch)})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Modal)
