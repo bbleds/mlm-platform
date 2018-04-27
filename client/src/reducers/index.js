@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { reducer as reduxFormReducer } from 'redux-form'
 import authReducer from './authReducer'
 import errorReducer from './errorReducer'
 import usersReducer from './usersReducer'
@@ -12,5 +13,6 @@ export default combineReducers({
   users : usersReducer,
   navToggled : navReducer,
   modal : modalReducer,
-  notification : notificationReducer
+  notification : notificationReducer,
+  form : reduxFormReducer
 })
