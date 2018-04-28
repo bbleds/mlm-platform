@@ -29,96 +29,104 @@ class AdminUsers extends Component{
 	render(){
 		const { user } = this.props
 		const users = this.props.users.users ? this.props.users.users.data.filter(i=>i.id !== user.id) : []
-		const headerCols = ['Name', 'Email', 'Permissions', 'Actions']
+		const headerCols = ['Name', 'Email', 'Permissions']
 
-		const bodyContent = users && users.length ?
-			users.map((i, index) => {
-				return (
-					<TableRow 
-						key={i.id} 
-						selected={this.props.users.selectedUsers.filter(x => x.id === i.id).length > 0} 
-					>
-						<TableRowColumn>{i.first_name} {i.last_name}</TableRowColumn>
-						<TableRowColumn>{i.email}</TableRowColumn>
-						<TableRowColumn>{i.permissions}</TableRowColumn>
-						<TableRowColumn>
-							<div onClick={e=>{
-								e.preventDefault()
-								e.stopPropagation()
-							}}>
-								<Link to={`/admin/users/${i.id}`}>
-									<RaisedButton 
-										label="Edit" 
-										primary={true} 
+		const data = users.map(i=>{
+			return {
+				...i,
+				name : `${i.first_name} ${i.last_name}`,
+				actions : [
+					{
+						label : 'Edit',
+						linkTo : `/admin/users/${i.id}`
+					},
+					{
+						label : 'Delete',
+						clickHandler : () => {
+							this.props.actions.toggleModal(
+								'Confirm Delete',
+								(<div>
+									<FlatButton
+										label="Cancel"
+										onClick={() => this.props.actions.toggleModal()}
 									/>
-								</Link>
-								<RaisedButton 
-									label="Delete" 
-									secondary={true} 
-									onClick={() => {
-										this.props.actions.toggleModal(
-											'Confirm Delete',
-											(<div>
-												<FlatButton
-													label="Cancel"
-													onClick={() => this.props.actions.toggleModal()}
-												/>
-												<FlatButton 
-													label="Confirm" 
-													onClick={() => {
-														this.props.actions.deleteUsers([i.id])
-														this.props.actions.toggleModal()
-													}}
-												/>
-											</div>),
-											(<p>This cannot be undone and will erase this user and all associated data. Are you sure you want to delete user "{i.first_name} {i.last_name}"?</p>)
-									)}}
+									<FlatButton 
+										label="Confirm" 
+										onClick={() => {
+											this.props.actions.deleteUsers([i.id])
+											this.props.actions.toggleModal()
+										}}
+									/>
+								</div>),
+								(<p>This cannot be undone and will erase this user and all associated data. Are you sure you want to delete user "{i.first_name} {i.last_name}"?</p>)
+						)}
+					}
+				],
+				selected : this.props.users.selectedUsers.filter(n=>n.id == i.id).length ? true : false
+			}
+		})
+		
+		// let desktopfooterContent = this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
+		// 	<RaisedButton 
+		// 		secondary={true} 
+		// 		label="Delete Selected" 
+		// 		onClick={()=>{
+		// 			this.props.actions.toggleModal(
+		// 				'Confirm Delete',
+		// 				(<div>
+		// 					<FlatButton
+		// 						label="Cancel"
+		// 						onClick={() => this.props.actions.toggleModal()}
+		// 					/>
+		// 					<FlatButton 
+		// 						label="Confirm" 
+		// 						onClick={() => {
+		// 							this.props.actions.deleteUsers(this.props.users.selectedUsers.map(i=>i.id))
+		// 							this.props.actions.toggleModal()
+		// 						}}
+		// 					/>
+		// 				</div>),
+		// 				(<p>This cannot be undone and will erase the selected user(s) and all associated data. Are you sure you want to delete the selected users? </p>)
+		// 		)}}
+		// 	/> :
+		// 	""
+		let bulkActions = this.props.users.selectedUsers && this.props.users.selectedUsers.length ?
+				[{
+					label : 'Delete Selected',
+					clickHandler : ()=>{
+						this.props.actions.toggleModal(
+							'Confirm Delete',
+							(<div>
+								<FlatButton
+									label="Cancel"
+									onClick={() => this.props.actions.toggleModal()}
 								/>
-							</div>
-						</TableRowColumn>
-					</TableRow>
-				)
-				}) : 
+								<FlatButton 
+									label="Confirm" 
+									onClick={() => {
+										this.props.actions.deleteUsers(this.props.users.selectedUsers.map(i=>i.id))
+										this.props.actions.toggleModal()
+									}}
+								/>
+							</div>),
+							(<p>This cannot be undone and will erase the selected user(s) and all associated data. Are you sure you want to delete the selected users? </p>)
+					)}
+				}] : 
 				""
-		const footerContent = this.props.users.selectedUsers && this.props.users.selectedUsers.length ? 
-			<RaisedButton 
-				secondary={true} 
-				label="Delete Selected" 
-				onClick={()=>{
-					this.props.actions.toggleModal(
-						'Confirm Delete',
-						(<div>
-							<FlatButton
-								label="Cancel"
-								onClick={() => this.props.actions.toggleModal()}
-							/>
-							<FlatButton 
-								label="Confirm" 
-								onClick={() => {
-									this.props.actions.deleteUsers(this.props.users.selectedUsers.map(i=>i.id))
-									this.props.actions.toggleModal()
-								}}
-							/>
-						</div>),
-						(<p>This cannot be undone and will erase the selected user(s) and all associated data. Are you sure you want to delete the selected users? </p>)
-				)}}
-			/> :
-			""
 
 		return(
 			<div>
-				{ 
-				users ? 
+				{  
 					users.length > 0 ? 
 						<TableList
+							includeActions={true}
 							title={'Users'}
 							headerCols={headerCols}
 							onRowSelection = {(rows) => this.props.actions.selectUsers(rows)}
-							bodyContent={bodyContent}
-							footerContent={footerContent}
+							data={data}
+							bulkActions={bulkActions}
 						/> :
-						<h1>No user Data Available</h1> :
-					<h1>Loading...</h1>
+						<h1>Loading...</h1>
 				}
 			</div>
 		)
